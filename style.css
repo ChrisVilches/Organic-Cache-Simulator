@@ -1,0 +1,23 @@
+*{
+	padding: 2px;
+	margin: 2px;
+}
+
+div.contenedor{
+	border:1px solid #dedede;
+	margin-bottom: 10px;
+	padding: 5px;
+}
+
+textarea.direcciones {
+	width: 300px;
+	height: 200px;
+}
+
+button.procesar{
+	display:block;
+}
+
+#span_error{
+	color: #ff0000;
+}

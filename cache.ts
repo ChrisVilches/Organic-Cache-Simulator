@@ -54,8 +54,9 @@ class Cache{
 		return Math.log(val) / Math.LN2;
 	}
 	
+	// En bytes
 	getCacheSize() : number{		
-		return this._blockSize * this._nBlocks;		
+		return this._blockSize * this._nBlocks * 4;		
 	}
 	
 	getNumSets() : number{
