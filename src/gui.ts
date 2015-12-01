@@ -32,6 +32,7 @@
 		
 		function procesarDirecciones() : void{
 			var direcciones : number[];
+			var tablaResultado : string;
 			
 			// Primero realizar las validaciones de la configuracion de cache
 			if(!validarConfiguracion()){
@@ -47,7 +48,9 @@
 			
 			cache.configurar(blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing);			
 			
-			cache.procesarDirecciones(direcciones);
+			tablaResultado = cache.procesarDirecciones(direcciones);
+			
+			$("#tablaCacheResultado").html(tablaResultado);
 			
 		}
 		
@@ -166,6 +169,8 @@
 
 
 		$(document).ready(function(){
+			
+			document.title = "Organic Cache Simulator";
 			
 			// Configuracion inicial
 			

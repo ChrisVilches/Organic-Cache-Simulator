@@ -106,9 +106,10 @@ class Cache{
 	}
 	
 	
-	procesarDirecciones(direcciones : number[]) : void{
+	procesarDirecciones(direcciones : number[]) : string{
 		var i : number;
 		var j : number;
+		var resultado : string = "";
 		
 		// Reiniciar el cache
 		this._cacheHitCuenta = 0;
@@ -142,8 +143,7 @@ class Cache{
 			}
 		}
 
-		
-		this.mostrarMatriz(sets, this.getNumSets(), this._setSize);
+			
 
 		// Leer todas las direcciones
 		
@@ -183,7 +183,13 @@ class Cache{
 			}					
 						
 		}		
+		
+		resultado = "** esto es una tabla que retorna la funcion de cache **";
+		
+		this.mostrarMatriz(sets, this.getNumSets(), this._setSize);
 		console.log("Hit: "+this._cacheHitCuenta+", miss: "+this._cacheMissCuenta);
+		
+		return resultado;
 	}
 	
 	
@@ -286,8 +292,13 @@ class Cache{
 		var j;
 		var linea : string = "";
 		for(i=0; i<n; i++){
+			linea += "set "+i+": ";
 			for(j=0; j<m; j++){
-				linea += "set " + i + ": " + matriz[i][j] + " ";
+				if(matriz[i][j] == -1){
+					linea += "- ";
+				} else {
+					linea += matriz[i][j] + " ";
+				}				
 			}
 			console.log(linea);
 			linea = "";

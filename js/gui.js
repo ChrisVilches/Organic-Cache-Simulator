@@ -82,6 +82,7 @@ var Cache = (function () {
     Cache.prototype.procesarDirecciones = function (direcciones) {
         var i;
         var j;
+        var resultado = "";
         // Reiniciar el cache
         this._cacheHitCuenta = 0;
         this._cacheMissCuenta = 0;
@@ -103,7 +104,6 @@ var Cache = (function () {
                 sets[i][j] = -1;
             }
         }
-        this.mostrarMatriz(sets, this.getNumSets(), this._setSize);
         // Leer todas las direcciones
         for (i = 0; i < direcciones.length; i++) {
             // Obtener la palabra
@@ -137,7 +137,10 @@ var Cache = (function () {
                 this._cacheMissCuenta++;
             }
         }
+        resultado = "** esto es una tabla que retorna la funcion de cache **";
+        this.mostrarMatriz(sets, this.getNumSets(), this._setSize);
         console.log("Hit: " + this._cacheHitCuenta + ", miss: " + this._cacheMissCuenta);
+        return resultado;
     };
     Cache.prototype.correrBloqueHastaMasReciente = function (set, bloque) {
         var i;
@@ -219,8 +222,14 @@ var Cache = (function () {
         var j;
         var linea = "";
         for (i = 0; i < n; i++) {
+            linea += "set " + i + ": ";
             for (j = 0; j < m; j++) {
-                linea += "set " + i + ": " + matriz[i][j] + " ";
+                if (matriz[i][j] == -1) {
+                    linea += "- ";
+                }
+                else {
+                    linea += matriz[i][j] + " ";
+                }
             }
             console.log(linea);
             linea = "";
@@ -252,6 +261,7 @@ function mostrarError(text) {
 }
 function procesarDirecciones() {
     var direcciones;
+    var tablaResultado;
     // Primero realizar las validaciones de la configuracion de cache
     if (!validarConfiguracion()) {
         return;
@@ -263,7 +273,8 @@ function procesarDirecciones() {
         return;
     }
     cache.configurar(blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing);
-    cache.procesarDirecciones(direcciones);
+    tablaResultado = cache.procesarDirecciones(direcciones);
+    $("#tablaCacheResultado").html(tablaResultado);
 }
 function crearArregloDirecciones() {
     // Todo lo que no es numero, transformarlo a espacio
@@ -351,6 +362,7 @@ function validarConfiguracion() {
     return true;
 }
 $(document).ready(function () {
+    document.title = "Organic Cache Simulator";
     // Configuracion inicial
     $("#config_blocksize").val((4).toString());
     $("#config_nblocks").val((16).toString());
