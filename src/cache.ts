@@ -16,7 +16,7 @@ class Cache{
 	
 	// Los numeros permitidos tienen un valor maximo de
 	// 2 elevado a este numero
-	POTENCIA : number = 10;
+	POTENCIA : number = 20;
 	
 	_blockSize : number;
 	_nBlocks : number;
@@ -36,7 +36,7 @@ class Cache{
 		
 		this._tipoDireccion = tipoDireccion.WORD;
 		this._algoritmoReemplazo = algoritmoReemplazo.LRU;
-		
+
 	}
 	
 	numeroCorrecto(valor : number) : Boolean{
@@ -50,9 +50,6 @@ class Cache{
 		return false;
 	}
 	
-	log2(val) : number {
-		return Math.log(val) / Math.LN2;
-	}
 	
 	// En bytes
 	getCacheSize() : number{		
@@ -77,6 +74,35 @@ class Cache{
 	
 	setNVias(vias : number) : void{
 		this._setSize = vias;
+	}
+	
+	
+	// Interfaz con la GUI, recibe la configuracion
+	configurar(blocksize : number, nblocks : number, nvias : number, algoritmo : string, tipoAsociatividad : string, addressing : string) : void{
+		this._blockSize = blocksize;
+		this._nBlocks = nblocks;
+		
+		// Algoritmo
+		if(algoritmo == "lru") this._algoritmoReemplazo == algoritmoReemplazo.LRU;
+		else if(algoritmo == "mru") this._algoritmoReemplazo == algoritmoReemplazo.MRU;
+		else if(algoritmo == "random") this._algoritmoReemplazo == algoritmoReemplazo.RANDOM;
+		
+		// Addressing
+		if(addressing == "b") this._tipoDireccion = tipoDireccion.BYTE;
+		else this._tipoDireccion = tipoDireccion.WORD;
+		
+		// Mapeo directo
+		if(tipoAsociatividad == "md") {
+			this._setSize = 1;
+		} 
+		// Set asociativo
+		else if(tipoAsociatividad == "sa") {
+			this._setSize = nvias;
+		} 
+		// Full asociativo
+		else if(tipoAsociatividad == "fa") {
+			this._setSize = this._nBlocks;
+		}  			
 	}
 	
 	
@@ -267,55 +293,6 @@ class Cache{
 			linea = "";
 		}
 		console.log();
-	}
-	
-	
-	
-	set blockSize(val:number) {
-		if(this.numeroCorrecto(val)){
-			this._blockSize = val;
-		}	
-    }
-	
-	set nBlocks(val:number) {
-		if(this.numeroCorrecto(val)){
-			this._nBlocks = val;
-		}	
-    }
-	
-	set setSize(val:number) {
-		if(this.numeroCorrecto(val)){
-			this._setSize = val;
-		}	
-    }
-	
-	
+	}	
 	
 }
-
-
-$(document).ready(function(){
-	
-	var cache : Cache = new Cache();
-	
-	cache.nBlocks = 8;
-	
-	cache.blockSize = 2;
-	
-	cache.setNVias(2);
-	
-	cache._algoritmoReemplazo = algoritmoReemplazo.LRU;
-	cache._tipoDireccion = tipoDireccion.BYTE;
-	
-	
-	console.log("Cache de "+cache.getCacheSize() + " bytes");	
-	console.log("Bloques de "+cache._blockSize+" palabras");
-	console.log("En total hay "+cache._nBlocks+" bloques");
-	console.log("numero de sets: "+cache.getNumSets());
-	console.log("Tiene "+cache._setSize+" bloques por set");
-	
-	
-	cache.procesarDirecciones([5, 9, 13, 105, 98, 55, 70, 157, 71, 104, 14]);
-	
-	
-});

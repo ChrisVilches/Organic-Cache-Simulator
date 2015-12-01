@@ -1,8 +1,8 @@
 <html>
 	<head>
-		<script type="text/javascript" src="jquery.js"></script>
-		<script type="text/javascript" src="cache.js"></script>
-		<script type="text/javascript" src="gui.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/cache.js"></script>
+		<script type="text/javascript" src="js/gui.js"></script>
 		<link rel="stylesheet" href="style.css" type="text/css"/>
 		<meta charset="utf-8" />
 	</head>
@@ -13,15 +13,15 @@
 			<table>
 				<tr>
 					<td>Tamaño de bloque (palabras)</td>
-					<td><input type="text" value="" id="config_blocksize" onblur="actualizarConfigInfo();"/></td>
+					<td><input type="text" value="" id="config_blocksize" onblur="validarConfiguracion();"/></td>
 				</tr>
 				<tr>
 					<td>Cantidad de bloques</td>
-					<td><input type="text" value="" id="config_nblocks" onblur="actualizarConfigInfo();"/></td>
+					<td><input type="text" value="" id="config_nblocks" onblur="validarConfiguracion();"/></td>
 				</tr>
 				<tr>
 					<td>Numero de vias (n-asociativo)</td>
-					<td><input type="text" value="" id="config_nvias" onblur="actualizarConfigInfo();"/></td>
+					<td><input type="text" value="" id="config_nvias" onblur="validarConfiguracion();"/></td>
 				</tr>
 				<tr>
 					<td>Cantidad de sets:</td>
@@ -32,9 +32,18 @@
 					<td id="info_cachesize"></td>
 				</tr>
 				<tr>
+					<td>Direccionamiento</td>
+					<td>
+						<select onchange="validarConfiguracion();" id="config_addressing">
+							<option value="w">WORD</option>
+							<option value="b">BYTE</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
 					<td>Algoritmo de reemplazo</td>
 					<td>
-						<select onchange="actualizarConfigInfo();" id="config_algoritmo">
+						<select onchange="validarConfiguracion();" id="config_algoritmo">
 							<option value="lru">LRU</option>
 							<option value="mru">MRU</option>
 							<option value="random">RANDOM</option>
@@ -44,7 +53,7 @@
 				<tr>
 					<td>Asociatividad</td>
 					<td>
-						<select onchange="actualizarConfigInfo();" id="config_tipoasociatividad">
+						<select onchange="validarConfiguracion();" id="config_tipoasociatividad">
 							<option value="md">Mapeo directo</option>
 							<option value="sa">Set asociativo</option>
 							<option value="fa">Full asociativo</option>
