@@ -12,6 +12,38 @@
 		var cache : Cache;
 		
 		
+		/*
+		*
+		*	Se ejecuta al cargar la pagina
+		*
+		*/
+		
+		$(document).ready(function(){
+			
+			document.title = "Organic Cache Simulator";
+
+			// Configuracion inicial
+			
+			$("#config_blocksize").val((4).toString());
+			$("#config_nblocks").val((16).toString());
+			$("#config_nvias").val((4).toString());	
+			validarConfiguracion();	
+			
+			cache = new Cache();	
+			
+			
+			// Evento mouse
+			
+			$("#btn_procesar").click(function(){	
+				procesarDirecciones();			
+			});
+			
+					
+		});
+		
+		
+		
+		
 		function isPowerOfTwo(x : number) : Boolean{
 			while (((x % 2) == 0) && x > 1)
 				x /= 2;
@@ -165,28 +197,4 @@
 			mostrarError("");
 			
 			return true;			
-		}
-
-
-		$(document).ready(function(){
-			
-			document.title = "Organic Cache Simulator";
-			
-			// Configuracion inicial
-			
-			$("#config_blocksize").val((4).toString());
-			$("#config_nblocks").val((16).toString());
-			$("#config_nvias").val((4).toString());	
-			validarConfiguracion();	
-			
-			cache = new Cache();	
-			
-			
-			// Evento mouse
-			
-			$("#btn_procesar").click(function(){	
-				procesarDirecciones();			
-			});
-			
-					
-		});
+		}		

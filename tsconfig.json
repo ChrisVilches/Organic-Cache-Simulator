@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "sourceMap":  true, 
+        "outFile": "js/main.js"
+    },
+    "files": [
+        "src/cache.ts",
+        "src/gui.ts",
+        "src/transpiladorMips.ts"
+    ]
+}
