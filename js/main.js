@@ -1,4 +1,5 @@
 /// <reference path="jquery.d.ts"/>
+"use strict";
 var algoritmoReemplazo;
 (function (algoritmoReemplazo) {
     algoritmoReemplazo[algoritmoReemplazo["LRU"] = 0] = "LRU";
@@ -24,13 +25,38 @@ var Cache = (function () {
         // 2 elevado a este numero
         this.POTENCIA = 20;
     }
-    // En bytes
-    Cache.prototype.getCacheSize = function () {
-        return this._blockSize * this._nBlocks * 4;
-    };
-    Cache.prototype.getNumSets = function () {
-        return this._nBlocks / this._setSize;
-    };
+    Object.defineProperty(Cache.prototype, "hitCount", {
+        get: function () {
+            return this._cacheHitCuenta;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Cache.prototype, "missCount", {
+        get: function () {
+            return this._cacheMissCuenta;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Cache.prototype, "hitRate", {
+        get: function () {
+            var total;
+            var hitPorcentaje;
+            total = this.hitCount + this.missCount;
+            hitPorcentaje = this.hitCount / total;
+            return Math.round(hitPorcentaje * 10000) / 100;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Cache.prototype, "numSets", {
+        get: function () {
+            return this._nBlocks / this._setSize;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // Interfaz con la GUI, recibe la configuracion
     Cache.prototype.configurar = function (blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing) {
         this._blockSize = blocksize;
@@ -77,13 +103,13 @@ var Cache = (function () {
         // El estado del cache, hit o miss?
         var estadohitmiss;
         // Crear sets
-        sets = new Array(this.getNumSets());
+        sets = new Array(this.numSets);
         // Cada set tiene SET SIZE bloques
-        for (i = 0; i < this.getNumSets(); i++) {
+        for (i = 0; i < this.numSets; i++) {
             sets[i] = new Array(this._setSize);
         }
         // Hacer que sean todos -1
-        for (i = 0; i < this.getNumSets(); i++) {
+        for (i = 0; i < this.numSets; i++) {
             for (j = 0; j < this._setSize; j++) {
                 sets[i][j] = -1;
             }
@@ -94,7 +120,8 @@ var Cache = (function () {
         resultado += "<th> </th>";
         resultado += "<th>direccion</th>";
         resultado += "<th>binario</th>";
-        for (i = 0; i < this.getNumSets(); i++) {
+        resultado += "<th>bloque #</th>";
+        for (i = 0; i < this.numSets; i++) {
             resultado += "<th>set " + i + "</th>";
         }
         resultado += "</tr>";
@@ -112,7 +139,7 @@ var Cache = (function () {
             // La palabra se encuentra en el bloque
             numBloque = Math.floor(palabra / this._blockSize);
             // El bloque mapea a
-            mapea = Math.floor(numBloque / this._setSize) % this.getNumSets();
+            mapea = Math.floor(numBloque / this._setSize) % this.numSets;
             // Ver si el bloque ya esta en cache
             if (this.bloqueEstaEnSet(sets[mapea], numBloque)) {
                 // Esta en cache
@@ -128,13 +155,13 @@ var Cache = (function () {
                 this._cacheMissCuenta++;
                 estadohitmiss = cacheEstado.MISS;
             }
-            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i]);
+            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque);
         }
         resultado += "</table>";
         return resultado;
     };
     // Entrega el estado de cache en un determinado momento
-    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion) {
+    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion, numBloque) {
         var i;
         var j;
         var cacheFila;
@@ -148,8 +175,9 @@ var Cache = (function () {
         // Colocar la direccion
         cacheFila += "<td>" + direccion + "</td>";
         cacheFila += "<td>" + (direccion.toString(2)) + "</td>";
+        cacheFila += "<td>" + numBloque + "</td>";
         // set[num set][num bloque]
-        for (i = 0; i < this.getNumSets(); i++) {
+        for (i = 0; i < this.numSets; i++) {
             cacheFila += "<td>";
             for (j = 0; j < this._setSize; j++) {
                 if (sets[i][j] != -1) {
@@ -290,6 +318,7 @@ function procesarDirecciones() {
     $("#textarea_codigomars").show();
     $("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
     $("#tablaCacheResultado").html(tablaResultado);
+    $("#hitMissRate").html("Hits: " + cache.hitCount + " Miss: " + cache.missCount + " Hit rate: " + cache.hitRate + "%");
 }
 function crearArregloDirecciones() {
     // Todo lo que no es numero, transformarlo a espacio

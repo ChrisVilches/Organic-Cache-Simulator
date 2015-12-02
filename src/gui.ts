@@ -65,7 +65,7 @@
 		function procesarDirecciones() : void{
 			var direcciones : number[];
 			var tablaResultado : string;
-			
+						
 			// Primero realizar las validaciones de la configuracion de cache
 			if(!validarConfiguracion()){
 				return;
@@ -89,6 +89,8 @@
 			$("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
 			
 			$("#tablaCacheResultado").html(tablaResultado);
+			
+			$("#hitMissRate").html("Hits: "+cache.hitCount+" Miss: "+cache.missCount+" Hit rate: "+cache.hitRate+"%");
 			
 		}
 		

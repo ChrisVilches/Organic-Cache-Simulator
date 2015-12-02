@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "sourceMap":  true, 
+        "target": "ES5",
         "outFile": "js/main.js"
     },
     "files": [

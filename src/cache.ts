@@ -1,4 +1,5 @@
 /// <reference path="jquery.d.ts"/>
+"use strict";
 
 enum algoritmoReemplazo{
 		LRU,
@@ -21,34 +22,45 @@ class Cache{
 	
 	// Los numeros permitidos tienen un valor maximo de
 	// 2 elevado a este numero
-	POTENCIA : number = 20;
+	private POTENCIA : number = 20;
 	
-	_blockSize : number;
-	_nBlocks : number;
+	private _blockSize : number;
+	private _nBlocks : number;	
+	private _setSize : number;
 	
-	_setSize : number;
+	private _algoritmoReemplazo : algoritmoReemplazo;
+	private _tipoDireccion : tipoDireccion;
 	
-	_algoritmoReemplazo : algoritmoReemplazo;
-	_tipoDireccion : tipoDireccion;
+	private _cacheHitCuenta : number;
+	private _cacheMissCuenta : number;
 	
-	_cacheHitCuenta : number;
-	_cacheMissCuenta : number;
 	
 	constructor(){
 		
 
 	}
 	
+	get hitCount() : number{
+		return this._cacheHitCuenta;
+	}
+	
+	get missCount() : number{
+		return this._cacheMissCuenta;
+	}
 
-	
-	// En bytes
-	getCacheSize() : number{		
-		return this._blockSize * this._nBlocks * 4;		
+	get hitRate() : number{
+		var total : number;
+		var hitPorcentaje : number;
+		total = this.hitCount + this.missCount;
+		hitPorcentaje = this.hitCount/total;
+		return Math.round(hitPorcentaje*10000)/100;
 	}
 	
-	getNumSets() : number{
-		return this._nBlocks/this._setSize;	
+	
+	get numSets() : number{
+		return this._nBlocks/this._setSize;
 	}
+		
 	
 	
 	// Interfaz con la GUI, recibe la configuracion
@@ -108,17 +120,17 @@ class Cache{
 
 		// Crear sets
 		
-		sets = new Array(this.getNumSets());
+		sets = new Array(this.numSets);
 		
 		// Cada set tiene SET SIZE bloques
 		
-		for (i=0; i<this.getNumSets(); i++){
+		for (i=0; i<this.numSets; i++){
 			sets[i] = new Array(this._setSize);
 		}		
 		
 		// Hacer que sean todos -1
 		
-		for(i=0; i<this.getNumSets(); i++){
+		for(i=0; i<this.numSets; i++){
 			for(j=0; j<this._setSize; j++){
 				sets[i][j] = -1;			
 			}
@@ -132,8 +144,9 @@ class Cache{
 		resultado += "<tr>";
 		resultado += "<th> </th>";
 		resultado += "<th>direccion</th>";
-		resultado += "<th>binario</th>";		
-		for(i=0; i<this.getNumSets(); i++){
+		resultado += "<th>binario</th>";
+		resultado += "<th>bloque #</th>";		
+		for(i=0; i<this.numSets; i++){
 			resultado += "<th>set "+i+"</th>";
 		}
 		resultado += "</tr>";	
@@ -156,7 +169,7 @@ class Cache{
 			numBloque = Math.floor(palabra/this._blockSize);
 			
 			// El bloque mapea a
-			mapea = Math.floor(numBloque/this._setSize) % this.getNumSets();
+			mapea = Math.floor(numBloque/this._setSize) % this.numSets;
 
 			// Ver si el bloque ya esta en cache
 			if(this.bloqueEstaEnSet(sets[mapea], numBloque)){
@@ -173,7 +186,7 @@ class Cache{
 				estadohitmiss = cacheEstado.MISS;
 			}			
 			
-			resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i]);
+			resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque);
 		}		
 		
 		resultado += "</table>";
@@ -183,7 +196,7 @@ class Cache{
 	
 	
 	// Entrega el estado de cache en un determinado momento
-	obtenerFilaCacheActual(sets, estadohitmiss : cacheEstado, direccion : number) : string{
+	obtenerFilaCacheActual(sets, estadohitmiss : cacheEstado, direccion : number, numBloque : number) : string{
 		var i:number;
 		var j:number;
 		var cacheFila:string;
@@ -200,10 +213,11 @@ class Cache{
 	
 		cacheFila += "<td>"+direccion+"</td>";
 		cacheFila += "<td>"+(direccion.toString(2))+"</td>";
+		cacheFila += "<td>"+numBloque+"</td>";
 		
 		// set[num set][num bloque]
 		
-		for(i=0; i<this.getNumSets(); i++){
+		for(i=0; i<this.numSets; i++){
 			cacheFila += "<td>";
 			for(j=0; j<this._setSize; j++){
 				if(sets[i][j] != -1){
