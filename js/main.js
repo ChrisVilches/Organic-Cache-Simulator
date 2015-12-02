@@ -12,6 +12,12 @@ var tipoDireccion;
     tipoDireccion[tipoDireccion["WORD"] = 1] = "WORD";
 })(tipoDireccion || (tipoDireccion = {}));
 ;
+var cacheEstado;
+(function (cacheEstado) {
+    cacheEstado[cacheEstado["HIT"] = 0] = "HIT";
+    cacheEstado[cacheEstado["MISS"] = 1] = "MISS";
+})(cacheEstado || (cacheEstado = {}));
+;
 var Cache = (function () {
     function Cache() {
         // Los numeros permitidos tienen un valor maximo de
@@ -68,6 +74,8 @@ var Cache = (function () {
         // Obtener la palabra leida (si es por WORD, es la misma direccion)
         // si es por BYTE hay que cambiarlo
         var palabra;
+        // El estado del cache, hit o miss?
+        var estadohitmiss;
         // Crear sets
         sets = new Array(this.getNumSets());
         // Cada set tiene SET SIZE bloques
@@ -80,6 +88,16 @@ var Cache = (function () {
                 sets[i][j] = -1;
             }
         }
+        resultado = "<table>";
+        // Crear las cabeceras de la tabla
+        resultado += "<tr>";
+        resultado += "<th> </th>";
+        resultado += "<th>direccion</th>";
+        resultado += "<th>binario</th>";
+        for (i = 0; i < this.getNumSets(); i++) {
+            resultado += "<th>set " + i + "</th>";
+        }
+        resultado += "</tr>";
         // Leer todas las direcciones
         for (i = 0; i < direcciones.length; i++) {
             if (this._tipoDireccion == tipoDireccion.BYTE) {
@@ -98,42 +116,49 @@ var Cache = (function () {
             // Ver si el bloque ya esta en cache
             if (this.bloqueEstaEnSet(sets[mapea], numBloque)) {
                 // Esta en cache
-                console.log("cache hit");
                 // Hay que reordenar
                 this.correrBloqueHastaMasReciente(sets[mapea], numBloque);
                 this._cacheHitCuenta++;
+                estadohitmiss = cacheEstado.HIT;
             }
             else {
                 // No esta en cache
-                console.log("cache miss");
                 // Lo agrega siempre al final
                 this.agregarBloqueASet(sets[mapea], numBloque);
                 this._cacheMissCuenta++;
+                estadohitmiss = cacheEstado.MISS;
             }
-            console.log("Direccion: " + direcciones[i]);
-            console.log(this.obtenerFilaCacheActual(sets));
-            console.log();
+            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i]);
         }
-        resultado = "** esto es una tabla que retorna la funcion de cache **";
-        console.log("Hit: " + this._cacheHitCuenta + ", miss: " + this._cacheMissCuenta);
+        resultado += "</table>";
         return resultado;
     };
     // Entrega el estado de cache en un determinado momento
-    Cache.prototype.obtenerFilaCacheActual = function (sets) {
+    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion) {
         var i;
         var j;
-        var set;
         var cacheFila;
-        cacheFila = "";
-        for (i = 0; i < this.getNumSets(); i++) {
-            set = "{";
-            // set[num set][num bloque]
-            for (j = 0; j < this._setSize; j++) {
-                set += sets[i][j] + " ";
-            }
-            set += "} ";
-            cacheFila += set;
+        // Agregar el estado
+        if (estadohitmiss == cacheEstado.HIT) {
+            cacheFila = "<tr class=\"hit\"><td>H</td>";
         }
+        else {
+            cacheFila = "<tr class=\"miss\"><td>M</td>";
+        }
+        // Colocar la direccion
+        cacheFila += "<td>" + direccion + "</td>";
+        cacheFila += "<td>" + (direccion.toString(2)) + "</td>";
+        // set[num set][num bloque]
+        for (i = 0; i < this.getNumSets(); i++) {
+            cacheFila += "<td>";
+            for (j = 0; j < this._setSize; j++) {
+                if (sets[i][j] != -1) {
+                    cacheFila += sets[i][j] + " ";
+                }
+            }
+            cacheFila += "</td>";
+        }
+        cacheFila += "</tr>";
         return cacheFila;
     };
     Cache.prototype.correrBloqueHastaMasReciente = function (set, bloque) {
@@ -257,8 +282,13 @@ function procesarDirecciones() {
         mostrarError("Ingresar direcciones correctamente");
         return;
     }
+    // Configurar cache
     cache.configurar(blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing);
+    // Obtener tabla cronologica de resultados
     tablaResultado = cache.procesarDirecciones(direcciones);
+    // Obtener codigo mars
+    $("#textarea_codigomars").show();
+    $("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
     $("#tablaCacheResultado").html(tablaResultado);
 }
 function crearArregloDirecciones() {
@@ -352,19 +382,18 @@ var transpiladorMips;
         return "0x" + num.toString(16);
     }
     transpiladorMips.hexEncode = hexEncode;
-    // A partir de direcciones de memoria, genera un codigo MIPS formateado para HTML
-    // con <br> para saltos de linea.
+    // A partir de direcciones de memoria, genera un codigo MIPS
     function obtenerCodigoMips(direcciones, tipoDireccionamiento) {
         var i;
         var base = 0x10040000;
         var resultado = "";
         if (tipoDireccionamiento == "b") {
             for (i = 0; i < direcciones.length; i++)
-                resultado += "lb $t0, " + hexEncode(base + direcciones[i]) + "<br>";
+                resultado += "lb $t0, " + hexEncode(base + direcciones[i]) + "\n";
         }
         else {
             for (i = 0; i < direcciones.length; i++)
-                resultado += "lw $t0, " + hexEncode(base + (direcciones[i] * 4)) + "<br>";
+                resultado += "lw $t0, " + hexEncode(base + (direcciones[i] * 4)) + "\n";
         }
         $("#tablaCacheResultado").html(resultado);
         return resultado;

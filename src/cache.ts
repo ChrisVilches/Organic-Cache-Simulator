@@ -11,6 +11,11 @@ enum tipoDireccion{
 	WORD
 };
 
+enum cacheEstado{
+	HIT,
+	MISS
+};
+
 
 class Cache{
 	
@@ -96,7 +101,10 @@ class Cache{
 		// Obtener la palabra leida (si es por WORD, es la misma direccion)
 		// si es por BYTE hay que cambiarlo
 		var palabra : number;
-
+		
+		// El estado del cache, hit o miss?
+		var estadohitmiss : cacheEstado;
+		
 
 		// Crear sets
 		
@@ -117,7 +125,20 @@ class Cache{
 		}
 
 			
-
+		resultado = "<table>";
+		
+		// Crear las cabeceras de la tabla
+		
+		resultado += "<tr>";
+		resultado += "<th> </th>";
+		resultado += "<th>direccion</th>";
+		resultado += "<th>binario</th>";		
+		for(i=0; i<this.getNumSets(); i++){
+			resultado += "<th>set "+i+"</th>";
+		}
+		resultado += "</tr>";	
+		
+			
 		// Leer todas las direcciones
 		
 		for(i=0; i<direcciones.length; i++){
@@ -140,52 +161,59 @@ class Cache{
 			// Ver si el bloque ya esta en cache
 			if(this.bloqueEstaEnSet(sets[mapea], numBloque)){
 				// Esta en cache
-				console.log("cache hit");
 				// Hay que reordenar
 				this.correrBloqueHastaMasReciente(sets[mapea], numBloque);
 				this._cacheHitCuenta++;
+				estadohitmiss = cacheEstado.HIT;
 			} else {
 				// No esta en cache
-				console.log("cache miss");
 				// Lo agrega siempre al final
 				this.agregarBloqueASet(sets[mapea], numBloque);
 				this._cacheMissCuenta++;
-			}		
+				estadohitmiss = cacheEstado.MISS;
+			}			
 			
-			console.log("Direccion: "+direcciones[i]);
-			console.log(this.obtenerFilaCacheActual(sets));
-			console.log();
-						
+			resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i]);
 		}		
 		
-		resultado = "** esto es una tabla que retorna la funcion de cache **";
-		
-		
-		console.log("Hit: "+this._cacheHitCuenta+", miss: "+this._cacheMissCuenta);
-		
+		resultado += "</table>";
 		
 		return resultado;
 	}
 	
 	
 	// Entrega el estado de cache en un determinado momento
-	obtenerFilaCacheActual(sets) : string{
+	obtenerFilaCacheActual(sets, estadohitmiss : cacheEstado, direccion : number) : string{
 		var i:number;
 		var j:number;
-		var set:string;
 		var cacheFila:string;
-				
-		cacheFila = "";
-		for(i=0; i<this.getNumSets(); i++){
-			set = "{";
+		
+		// Agregar el estado
 			
-			// set[num set][num bloque]
-			for(j=0; j<this._setSize; j++){
-				set += sets[i][j]+" ";
+			if(estadohitmiss == cacheEstado.HIT){
+				cacheFila = "<tr class=\"hit\"><td>H</td>";
+			} else {
+				cacheFila = "<tr class=\"miss\"><td>M</td>";
 			}
-			set += "} ";
-			cacheFila += set;
+			
+		// Colocar la direccion
+	
+		cacheFila += "<td>"+direccion+"</td>";
+		cacheFila += "<td>"+(direccion.toString(2))+"</td>";
+		
+		// set[num set][num bloque]
+		
+		for(i=0; i<this.getNumSets(); i++){
+			cacheFila += "<td>";
+			for(j=0; j<this._setSize; j++){
+				if(sets[i][j] != -1){
+					cacheFila += sets[i][j]+" ";
+				}				
+			}
+			cacheFila += "</td>";
 		}
+		
+		cacheFila += "</tr>";
 		
 		return cacheFila;
 	}

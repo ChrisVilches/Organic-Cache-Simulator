@@ -78,10 +78,15 @@
 				return;
 			}
 			
-		
+			// Configurar cache
 			cache.configurar(blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing);			
 			
+			// Obtener tabla cronologica de resultados
 			tablaResultado = cache.procesarDirecciones(direcciones);
+			
+			// Obtener codigo mars
+			$("#textarea_codigomars").show();
+			$("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
 			
 			$("#tablaCacheResultado").html(tablaResultado);
 			

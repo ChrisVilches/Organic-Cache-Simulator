@@ -1,17 +1,35 @@
 *{
 	padding: 2px;
 	margin: 2px;
+    font-family: monospace, "Times New Roman", Times, serif;
+
+}
+
+a{
+	color:red;
+	text-decoration: none;
+}
+a:hover{
+	color:black;
+}
+
+div {
+	margin-bottom: 10px;
+	padding: 5px;
 }
 
 div.contenedor{
-	border:1px solid #dedede;
-	margin-bottom: 10px;
-	padding: 5px;
+	border:1px solid #dedede;	
 }
 
 textarea.direcciones {
 	width: 300px;
 	height: 200px;
+}
+
+#textarea_codigomars{
+	width: 300px;
+	height: 100px;
 }
 
 button.procesar{
@@ -20,4 +38,23 @@ button.procesar{
 
 #span_error{
 	color: #ff0000;
+}
+
+tr.hit {
+	background-color: #ccffcc;
+}
+
+tr.miss{
+	background-color: #ffcccc;
+}
+
+
+div.header{
+	font-weight: bold;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;	
+}
+
+span.orga{
+	color:#ff0000;
+	padding: 0px;
 }
