@@ -17,22 +17,7 @@ var Cache = (function () {
         // Los numeros permitidos tienen un valor maximo de
         // 2 elevado a este numero
         this.POTENCIA = 20;
-        this._blockSize = 4;
-        this._nBlocks = 8;
-        this._setSize = 2;
-        this._tipoDireccion = tipoDireccion.WORD;
-        this._algoritmoReemplazo = algoritmoReemplazo.LRU;
     }
-    Cache.prototype.numeroCorrecto = function (valor) {
-        var i;
-        for (i = 0; i < this.POTENCIA; i++) {
-            if (Math.pow(2, i) == valor) {
-                return true;
-            }
-        }
-        console.log("Numero incorrecto");
-        return false;
-    };
     // En bytes
     Cache.prototype.getCacheSize = function () {
         return this._blockSize * this._nBlocks * 4;
@@ -40,29 +25,17 @@ var Cache = (function () {
     Cache.prototype.getNumSets = function () {
         return this._nBlocks / this._setSize;
     };
-    Cache.prototype.setFullAsociativo = function () {
-        // Full asociativo tiene un solo set
-        // que contiene todos los bloques
-        this._setSize = this._nBlocks;
-    };
-    Cache.prototype.setMapeoDirecto = function () {
-        // Cada set tiene solo un bloque
-        this._setSize = 1;
-    };
-    Cache.prototype.setNVias = function (vias) {
-        this._setSize = vias;
-    };
     // Interfaz con la GUI, recibe la configuracion
     Cache.prototype.configurar = function (blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing) {
         this._blockSize = blocksize;
         this._nBlocks = nblocks;
         // Algoritmo
         if (algoritmo == "lru")
-            this._algoritmoReemplazo == algoritmoReemplazo.LRU;
+            this._algoritmoReemplazo = algoritmoReemplazo.LRU;
         else if (algoritmo == "mru")
-            this._algoritmoReemplazo == algoritmoReemplazo.MRU;
+            this._algoritmoReemplazo = algoritmoReemplazo.MRU;
         else if (algoritmo == "random")
-            this._algoritmoReemplazo == algoritmoReemplazo.RANDOM;
+            this._algoritmoReemplazo = algoritmoReemplazo.RANDOM;
         // Addressing
         if (addressing == "b")
             this._tipoDireccion = tipoDireccion.BYTE;
@@ -92,6 +65,9 @@ var Cache = (function () {
         var mapea;
         // Aca se almacena la tabla
         var sets;
+        // Obtener la palabra leida (si es por WORD, es la misma direccion)
+        // si es por BYTE hay que cambiarlo
+        var palabra;
         // Crear sets
         sets = new Array(this.getNumSets());
         // Cada set tiene SET SIZE bloques
@@ -106,8 +82,6 @@ var Cache = (function () {
         }
         // Leer todas las direcciones
         for (i = 0; i < direcciones.length; i++) {
-            // Obtener la palabra
-            var palabra;
             if (this._tipoDireccion == tipoDireccion.BYTE) {
                 // Si es por byte, hay que obtener a que palabra
                 // pertenece ese byte
@@ -136,11 +110,31 @@ var Cache = (function () {
                 this.agregarBloqueASet(sets[mapea], numBloque);
                 this._cacheMissCuenta++;
             }
+            console.log("Direccion: " + direcciones[i]);
+            console.log(this.obtenerFilaCacheActual(sets));
+            console.log();
         }
         resultado = "** esto es una tabla que retorna la funcion de cache **";
-        this.mostrarMatriz(sets, this.getNumSets(), this._setSize);
         console.log("Hit: " + this._cacheHitCuenta + ", miss: " + this._cacheMissCuenta);
         return resultado;
+    };
+    // Entrega el estado de cache en un determinado momento
+    Cache.prototype.obtenerFilaCacheActual = function (sets) {
+        var i;
+        var j;
+        var set;
+        var cacheFila;
+        cacheFila = "";
+        for (i = 0; i < this.getNumSets(); i++) {
+            set = "{";
+            // set[num set][num bloque]
+            for (j = 0; j < this._setSize; j++) {
+                set += sets[i][j] + " ";
+            }
+            set += "} ";
+            cacheFila += set;
+        }
+        return cacheFila;
     };
     Cache.prototype.correrBloqueHastaMasReciente = function (set, bloque) {
         var i;
@@ -208,33 +202,6 @@ var Cache = (function () {
             }
         }
         return false;
-    };
-    Cache.prototype.mostrarSet = function (set) {
-        var i;
-        var resultado = "";
-        for (i = 0; i < this._setSize; i++) {
-            resultado += set[i] + " ";
-        }
-        return resultado;
-    };
-    Cache.prototype.mostrarMatriz = function (matriz, n, m) {
-        var i;
-        var j;
-        var linea = "";
-        for (i = 0; i < n; i++) {
-            linea += "set " + i + ": ";
-            for (j = 0; j < m; j++) {
-                if (matriz[i][j] == -1) {
-                    linea += "- ";
-                }
-                else {
-                    linea += matriz[i][j] + " ";
-                }
-            }
-            console.log(linea);
-            linea = "";
-        }
-        console.log();
     };
     return Cache;
 })();

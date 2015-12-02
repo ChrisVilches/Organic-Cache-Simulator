@@ -30,26 +30,11 @@ class Cache{
 	_cacheMissCuenta : number;
 	
 	constructor(){
-		this._blockSize = 4;
-		this._nBlocks = 8;
-		this._setSize = 2;
 		
-		this._tipoDireccion = tipoDireccion.WORD;
-		this._algoritmoReemplazo = algoritmoReemplazo.LRU;
 
 	}
 	
-	numeroCorrecto(valor : number) : Boolean{
-		var i : number;
-		for(i=0; i<this.POTENCIA; i++){
-			if(Math.pow(2, i) == valor){
-				return true;
-			}
-		}		
-		console.log("Numero incorrecto");
-		return false;
-	}
-	
+
 	
 	// En bytes
 	getCacheSize() : number{		
@@ -61,31 +46,15 @@ class Cache{
 	}
 	
 	
-	setFullAsociativo() : void{
-		// Full asociativo tiene un solo set
-		// que contiene todos los bloques
-		this._setSize = this._nBlocks;
-	}
-	
-	setMapeoDirecto() : void{
-		// Cada set tiene solo un bloque
-		this._setSize = 1;
-	}
-	
-	setNVias(vias : number) : void{
-		this._setSize = vias;
-	}
-	
-	
 	// Interfaz con la GUI, recibe la configuracion
 	configurar(blocksize : number, nblocks : number, nvias : number, algoritmo : string, tipoAsociatividad : string, addressing : string) : void{
 		this._blockSize = blocksize;
 		this._nBlocks = nblocks;
 		
 		// Algoritmo
-		if(algoritmo == "lru") this._algoritmoReemplazo == algoritmoReemplazo.LRU;
-		else if(algoritmo == "mru") this._algoritmoReemplazo == algoritmoReemplazo.MRU;
-		else if(algoritmo == "random") this._algoritmoReemplazo == algoritmoReemplazo.RANDOM;
+		if(algoritmo == "lru") this._algoritmoReemplazo = algoritmoReemplazo.LRU;
+		else if(algoritmo == "mru") this._algoritmoReemplazo = algoritmoReemplazo.MRU;
+		else if(algoritmo == "random") this._algoritmoReemplazo = algoritmoReemplazo.RANDOM;
 		
 		// Addressing
 		if(addressing == "b") this._tipoDireccion = tipoDireccion.BYTE;
@@ -123,6 +92,10 @@ class Cache{
 		
 		// Aca se almacena la tabla
 		var sets;
+		
+		// Obtener la palabra leida (si es por WORD, es la misma direccion)
+		// si es por BYTE hay que cambiarlo
+		var palabra : number;
 
 
 		// Crear sets
@@ -148,9 +121,6 @@ class Cache{
 		// Leer todas las direcciones
 		
 		for(i=0; i<direcciones.length; i++){
-			
-			// Obtener la palabra
-			var palabra : number;
 			
 			if(this._tipoDireccion == tipoDireccion.BYTE){
 				// Si es por byte, hay que obtener a que palabra
@@ -180,18 +150,47 @@ class Cache{
 				// Lo agrega siempre al final
 				this.agregarBloqueASet(sets[mapea], numBloque);
 				this._cacheMissCuenta++;
-			}					
+			}		
+			
+			console.log("Direccion: "+direcciones[i]);
+			console.log(this.obtenerFilaCacheActual(sets));
+			console.log();
 						
 		}		
 		
 		resultado = "** esto es una tabla que retorna la funcion de cache **";
 		
-		this.mostrarMatriz(sets, this.getNumSets(), this._setSize);
+		
 		console.log("Hit: "+this._cacheHitCuenta+", miss: "+this._cacheMissCuenta);
+		
 		
 		return resultado;
 	}
 	
+	
+	// Entrega el estado de cache en un determinado momento
+	obtenerFilaCacheActual(sets) : string{
+		var i:number;
+		var j:number;
+		var set:string;
+		var cacheFila:string;
+				
+		cacheFila = "";
+		for(i=0; i<this.getNumSets(); i++){
+			set = "{";
+			
+			// set[num set][num bloque]
+			for(j=0; j<this._setSize; j++){
+				set += sets[i][j]+" ";
+			}
+			set += "} ";
+			cacheFila += set;
+		}
+		
+		return cacheFila;
+	}
+	
+
 	
 	correrBloqueHastaMasReciente(set, bloque : number) : void{
 		var i : number;
@@ -241,7 +240,7 @@ class Cache{
 		}
 		
 		// Esta lleno
-		
+
 		switch(this._algoritmoReemplazo){
 			case algoritmoReemplazo.LRU:
 				// El primero es el mas antiguo
@@ -275,35 +274,5 @@ class Cache{
 		}
 		return false;
 	}
-	
-	
-	mostrarSet(set){
-		var i;
-		var resultado = "";
-		for(i=0; i<this._setSize; i++){
-			resultado += set[i] + " ";
-		}
-		return resultado;	
-	}
-	
-	
-	mostrarMatriz(matriz, n, m):void{
-		var i;
-		var j;
-		var linea : string = "";
-		for(i=0; i<n; i++){
-			linea += "set "+i+": ";
-			for(j=0; j<m; j++){
-				if(matriz[i][j] == -1){
-					linea += "- ";
-				} else {
-					linea += matriz[i][j] + " ";
-				}				
-			}
-			console.log(linea);
-			linea = "";
-		}
-		console.log();
-	}	
 	
 }

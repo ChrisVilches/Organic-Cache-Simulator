@@ -78,6 +78,7 @@
 				return;
 			}
 			
+		
 			cache.configurar(blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing);			
 			
 			tablaResultado = cache.procesarDirecciones(direcciones);
