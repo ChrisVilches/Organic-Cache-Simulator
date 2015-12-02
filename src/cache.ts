@@ -18,12 +18,8 @@ enum cacheEstado{
 };
 
 
-class Cache{
-	
-	// Los numeros permitidos tienen un valor maximo de
-	// 2 elevado a este numero
-	private POTENCIA : number = 20;
-	
+class Cache{	
+
 	private _blockSize : number;
 	private _nBlocks : number;	
 	private _setSize : number;

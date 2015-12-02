@@ -21,9 +21,6 @@ var cacheEstado;
 ;
 var Cache = (function () {
     function Cache() {
-        // Los numeros permitidos tienen un valor maximo de
-        // 2 elevado a este numero
-        this.POTENCIA = 20;
     }
     Object.defineProperty(Cache.prototype, "hitCount", {
         get: function () {
