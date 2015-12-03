@@ -90,7 +90,7 @@
 			
 			$("#tablaCacheResultado").html(tablaResultado);
 			
-			$("#hitMissRate").html("Hits: "+cache.hitCount+" Miss: "+cache.missCount+" Hit rate: "+cache.hitRate+"%");
+			$("#hitMissRate").html("<p>Hits: <b>"+cache.hitCount+"</b></p><p>Miss: <b>"+cache.missCount+"</b></p><p>Hit rate: <b>"+cache.hitRate+"%</b></p>");
 			
 		}
 		
@@ -126,8 +126,8 @@
 		}
 		
 		
-		function validarConfiguracion() : Boolean{
-			
+		function validarConfiguracion() : Boolean{			
+						
 			// Obtener los datos de la GUI
 			
 			var input_blocksize : number = Number($("#config_blocksize").val());
@@ -137,6 +137,12 @@
 			var input_asociatividad : string = $("#config_tipoasociatividad").val();
 			var input_algoritmo : string = $("#config_algoritmo").val();
 			var input_addressing : string = $("#config_addressing").val();
+			
+			// No pueden haber mas bloques que vias, se cambia
+			if(input_nvias > input_nblocks){
+				$("#config_nvias").val(input_nblocks.toString());
+				input_nvias = input_nblocks;
+			}
 			
 			
 			// Validar cada uno
@@ -149,7 +155,7 @@
 				mostrarError("Numero de bloques no es correcto. Debe ser numero entero, potencia de 2.");
 				return false;
 			}
-			if(!numeroCorrecto(input_nvias) && tipoAsociatividad == "sa"){
+			if(tipoAsociatividad == "sa" && !numeroCorrecto(input_nvias)){
 				mostrarError("Numero de vias no es correcto. Debe ser numero entero, potencia de 2.");
 				return false;
 			}
@@ -160,7 +166,7 @@
 			}
 			
 			if(!(input_algoritmo == "lru" || input_algoritmo == "mru" || input_algoritmo == "random")){
-				mostrarError("Asociatividad incorrecta.");
+				mostrarError("Algoritmo incorrecto.");
 				return false;
 			}
 			
@@ -168,6 +174,7 @@
 				mostrarError("Tipo de addressing incorrecto.");
 				return false;
 			}
+						
 			
 			// Si los datos de la GUI son correctos, se asignan a las variables del programa
 			
@@ -200,7 +207,7 @@
 			}
 			
 						
-			$("#info_cachesize").text((nblocks * blocksize * 4) + " bytes");
+			$("#info_cachesize").text((nblocks * blocksize * 4) + " bytes ("+(nblocks * blocksize)+" palabras)");
 			
 			mostrarError("");
 			

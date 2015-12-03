@@ -9,7 +9,10 @@
 	<body>
 		
 		<div class="header"><span class="orga">ORGA</span>nic cache simulator</div>
-		<div class="contenedor">Simulador de cache escrito en TypeScript. <a href="https://github.com/FeloVilches/Organic-Cache-Simulator" target="_blank">github</a></div>
+		<div class="contenedor">
+			Simulador de memoria cache. 
+			<a href="https://github.com/FeloVilches/Organic-Cache-Simulator" target="_blank">github</a>
+		</div>
 		
 		<!-- Configuracion -->
 		<div class="contenedor">
@@ -27,11 +30,11 @@
 					<td><input type="text" value="" id="config_nvias" onblur="validarConfiguracion();"/></td>
 				</tr>
 				<tr>
-					<td>Cantidad de sets:</td>
+					<td>Cantidad de sets</td>
 					<td id="info_nsets"></td>
 				</tr>
 				<tr>
-					<td>Tamaño cache:</td>
+					<td>Tamaño cache</td>
 					<td id="info_cachesize"></td>
 				</tr>
 				<tr>
@@ -73,16 +76,17 @@
 			<textarea id="textarea_direcciones" class="direcciones"></textarea>
 			
 			<!-- Procesar direcciones -->
-			<button id="btn_procesar" class="procesar">OK</button>
-			
+			<button id="btn_procesar" class="procesar">OK</button>			
+		
 			<!-- Errores -->
 			<span id="span_error"></span>
+			
 		</div>
 		
 		
 		<div id="hitMissRate">
 		</div>
-		
+
 		<div id="tablaCacheResultado">			
 		</div>
 		

@@ -315,7 +315,7 @@ function procesarDirecciones() {
     $("#textarea_codigomars").show();
     $("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
     $("#tablaCacheResultado").html(tablaResultado);
-    $("#hitMissRate").html("Hits: " + cache.hitCount + " Miss: " + cache.missCount + " Hit rate: " + cache.hitRate + "%");
+    $("#hitMissRate").html("<p>Hits: <b>" + cache.hitCount + "</b></p><p>Miss: <b>" + cache.missCount + "</b></p><p>Hit rate: <b>" + cache.hitRate + "%</b></p>");
 }
 function crearArregloDirecciones() {
     // Todo lo que no es numero, transformarlo a espacio
@@ -347,6 +347,11 @@ function validarConfiguracion() {
     var input_asociatividad = $("#config_tipoasociatividad").val();
     var input_algoritmo = $("#config_algoritmo").val();
     var input_addressing = $("#config_addressing").val();
+    // No pueden haber mas bloques que vias, se cambia
+    if (input_nvias > input_nblocks) {
+        $("#config_nvias").val(input_nblocks.toString());
+        input_nvias = input_nblocks;
+    }
     // Validar cada uno
     if (!numeroCorrecto(input_blocksize)) {
         mostrarError("Tamaño de bloque no es correcto. Debe ser numero entero, potencia de 2.");
@@ -356,7 +361,7 @@ function validarConfiguracion() {
         mostrarError("Numero de bloques no es correcto. Debe ser numero entero, potencia de 2.");
         return false;
     }
-    if (!numeroCorrecto(input_nvias) && tipoAsociatividad == "sa") {
+    if (tipoAsociatividad == "sa" && !numeroCorrecto(input_nvias)) {
         mostrarError("Numero de vias no es correcto. Debe ser numero entero, potencia de 2.");
         return false;
     }
@@ -365,7 +370,7 @@ function validarConfiguracion() {
         return false;
     }
     if (!(input_algoritmo == "lru" || input_algoritmo == "mru" || input_algoritmo == "random")) {
-        mostrarError("Asociatividad incorrecta.");
+        mostrarError("Algoritmo incorrecto.");
         return false;
     }
     if (!(input_addressing == "w" || input_addressing == "b")) {
@@ -398,7 +403,7 @@ function validarConfiguracion() {
         $("#info_nsets").text((1).toString());
         $("#config_algoritmo").prop('disabled', false);
     }
-    $("#info_cachesize").text((nblocks * blocksize * 4) + " bytes");
+    $("#info_cachesize").text((nblocks * blocksize * 4) + " bytes (" + (nblocks * blocksize) + " palabras)");
     mostrarError("");
     return true;
 }
