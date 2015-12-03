@@ -347,7 +347,7 @@ function validarConfiguracion() {
     var input_asociatividad = $("#config_tipoasociatividad").val();
     var input_algoritmo = $("#config_algoritmo").val();
     var input_addressing = $("#config_addressing").val();
-    // No pueden haber mas bloques que vias, se cambia
+    // No puede haber mas bloques que vias, se cambia
     if (input_nvias > input_nblocks) {
         $("#config_nvias").val(input_nblocks.toString());
         input_nvias = input_nblocks;

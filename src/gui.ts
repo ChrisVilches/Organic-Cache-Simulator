@@ -138,7 +138,7 @@
 			var input_algoritmo : string = $("#config_algoritmo").val();
 			var input_addressing : string = $("#config_addressing").val();
 			
-			// No pueden haber mas bloques que vias, se cambia
+			// No puede haber mas bloques que vias, se cambia
 			if(input_nvias > input_nblocks){
 				$("#config_nvias").val(input_nblocks.toString());
 				input_nvias = input_nblocks;
