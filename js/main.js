@@ -115,6 +115,7 @@ var Cache = (function () {
         // Crear las cabeceras de la tabla
         resultado += "<tr>";
         resultado += "<th> </th>";
+        resultado += "<th>#</th>";
         resultado += "<th>direccion</th>";
         resultado += "<th>binario</th>";
         resultado += "<th>bloque #</th>";
@@ -152,13 +153,13 @@ var Cache = (function () {
                 this._cacheMissCuenta++;
                 estadohitmiss = cacheEstado.MISS;
             }
-            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque);
+            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque, i);
         }
         resultado += "</table>";
         return resultado;
     };
     // Entrega el estado de cache en un determinado momento
-    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion, numBloque) {
+    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion, numBloque, numeroAcceso) {
         var i;
         var j;
         var cacheFila;
@@ -169,6 +170,8 @@ var Cache = (function () {
         else {
             cacheFila = "<tr class=\"miss\"><td>M</td>";
         }
+        // Numero de acceso
+        cacheFila += "<td>" + (numeroAcceso + 1) + "</td>";
         // Colocar la direccion
         cacheFila += "<td>" + direccion + "</td>";
         cacheFila += "<td>" + (direccion.toString(2)) + "</td>";

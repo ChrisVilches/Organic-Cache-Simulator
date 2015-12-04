@@ -139,6 +139,7 @@ class Cache{
 		
 		resultado += "<tr>";
 		resultado += "<th> </th>";
+		resultado += "<th>#</th>";
 		resultado += "<th>direccion</th>";
 		resultado += "<th>binario</th>";
 		resultado += "<th>bloque #</th>";				
@@ -183,7 +184,7 @@ class Cache{
 				estadohitmiss = cacheEstado.MISS;
 			}			
 			
-			resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque);
+			resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque, i);
 		}		
 		
 		resultado += "</table>";
@@ -193,10 +194,10 @@ class Cache{
 	
 	
 	// Entrega el estado de cache en un determinado momento
-	obtenerFilaCacheActual(sets, estadohitmiss : cacheEstado, direccion : number, numBloque : number) : string{
+	obtenerFilaCacheActual(sets, estadohitmiss : cacheEstado, direccion : number, numBloque : number, numeroAcceso : number) : string{
 		var i:number;
 		var j:number;
-		var cacheFila:string;
+		var cacheFila:string;		
 		
 		// Agregar el estado
 			
@@ -205,6 +206,9 @@ class Cache{
 			} else {
 				cacheFila = "<tr class=\"miss\"><td>M</td>";
 			}
+			
+		// Numero de acceso
+		cacheFila += "<td>"+(numeroAcceso+1)+"</td>";
 			
 		// Colocar la direccion
 	
