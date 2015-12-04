@@ -390,25 +390,23 @@ function validarConfiguracion() {
     // Para asociatividades distintas, se habilitan o deshabilitan algunos campos
     if (tipoAsociatividad == "md") {
         $("#config_nvias").prop('disabled', true);
-        $("#config_setsize").prop('disabled', true);
         $("#config_algoritmo").prop('disabled', true);
         // Actualizar automaticamente el numero de vias
         nvias = 1;
     }
     else if (tipoAsociatividad == "sa") {
         $("#config_nvias").prop('disabled', false);
-        $("#config_setsize").prop('disabled', false);
         $("#config_algoritmo").prop('disabled', false);
     }
     else if (tipoAsociatividad == "fa") {
         $("#config_nvias").prop('disabled', true);
-        $("#config_setsize").prop('disabled', true);
         $("#config_algoritmo").prop('disabled', false);
         // Actualizar automaticamente el numero de vias
         nvias = nblocks;
     }
-    // Cambiar los inputs de forma automatica
+    // Cambiar el input de forma automatica
     $("#config_nvias").val(nvias.toString());
+    // Mostrar informacion (no input de texto)
     $("#info_nsets").text((nblocks / nvias).toString());
     $("#info_cachesize").text((nblocks * blocksize * 4) + " bytes (" + (nblocks * blocksize) + " palabras)");
     mostrarError("");
