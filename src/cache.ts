@@ -167,7 +167,7 @@ class Cache{
 			numBloque = Math.floor(palabra/this._blockSize);
 			
 			// El bloque mapea a
-			mapea = Math.floor(numBloque/this._setSize) % this.numSets;
+			mapea = numBloque % this.numSets;
 
 			// Ver si el bloque ya esta en cache
 			if(this.bloqueEstaEnSet(sets[mapea], numBloque)){
