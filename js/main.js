@@ -392,20 +392,24 @@ function validarConfiguracion() {
         $("#config_nvias").prop('disabled', true);
         $("#config_setsize").prop('disabled', true);
         $("#config_algoritmo").prop('disabled', true);
-        $("#info_nsets").text(nblocks.toString());
+        // Actualizar automaticamente el numero de vias
+        nvias = 1;
     }
     else if (tipoAsociatividad == "sa") {
         $("#config_nvias").prop('disabled', false);
         $("#config_setsize").prop('disabled', false);
-        $("#info_nsets").text((nblocks / nvias).toString());
         $("#config_algoritmo").prop('disabled', false);
     }
     else if (tipoAsociatividad == "fa") {
         $("#config_nvias").prop('disabled', true);
         $("#config_setsize").prop('disabled', true);
-        $("#info_nsets").text((1).toString());
         $("#config_algoritmo").prop('disabled', false);
+        // Actualizar automaticamente el numero de vias
+        nvias = nblocks;
     }
+    // Cambiar los inputs de forma automatica
+    $("#config_nvias").val(nvias.toString());
+    $("#info_nsets").text((nblocks / nvias).toString());
     $("#info_cachesize").text((nblocks * blocksize * 4) + " bytes (" + (nblocks * blocksize) + " palabras)");
     mostrarError("");
     return true;
