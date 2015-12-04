@@ -48,6 +48,15 @@ tr.miss{
 	background-color: #ffcccc;
 }
 
+table.tablaCacheHitMiss{
+	border-collapse: collapse;	
+}
+
+table.tablaCacheHitMiss td, th{
+	padding:3px 10px;
+	border:1px solid #444444;
+}
+
 
 div.header{
 	font-weight: bold;

@@ -83,15 +83,19 @@
 			
 		</div>
 		
-		
-		<div id="hitMissRate">
-		</div>
-
-		<div id="tablaCacheResultado">			
-		</div>
-		
-		<div id="transpiladoMars">
-			<textarea id="textarea_codigomars" style="display:none;" onclick="this.select()"></textarea>
+		<div class="contenedor" style="display:none" id="todosResultados">
+			
+			<!-- Cuenta de hit y miss -->
+			<div id="hitMissRate">
+			</div>
+	
+			<!-- La tabla de resultados -->
+			<div id="tablaCacheResultado">			
+			</div>
+			
+			<!-- Codigo transpilado -->
+			<p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars (si se configura el cache de la misma manera.)</p>
+			<textarea id="textarea_codigomars" onclick="this.select()"></textarea>
 		</div>
 		
 		

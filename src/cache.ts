@@ -133,7 +133,7 @@ class Cache{
 		}
 
 			
-		resultado = "<table>";
+		resultado = "<table class=\"tablaCacheHitMiss\">";
 		
 		// Crear las cabeceras de la tabla
 		
@@ -141,7 +141,8 @@ class Cache{
 		resultado += "<th> </th>";
 		resultado += "<th>direccion</th>";
 		resultado += "<th>binario</th>";
-		resultado += "<th>bloque #</th>";		
+		resultado += "<th>bloque #</th>";				
+		
 		for(i=0; i<this.numSets; i++){
 			resultado += "<th>set "+i+"</th>";
 		}

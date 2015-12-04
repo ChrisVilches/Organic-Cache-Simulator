@@ -84,14 +84,17 @@
 			// Obtener tabla cronologica de resultados
 			tablaResultado = cache.procesarDirecciones(direcciones);
 			
-			// Obtener codigo mars
-			$("#textarea_codigomars").show();
+			// Obtener codigo mars			
 			$("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
 			
+			// Mostrar tabla
 			$("#tablaCacheResultado").html(tablaResultado);
 			
+			// Mostrar cuenta hit y miss
 			$("#hitMissRate").html("<p>Hits: <b>"+cache.hitCount+"</b></p><p>Miss: <b>"+cache.missCount+"</b></p><p>Hit rate: <b>"+cache.hitRate+"%</b></p>");
 			
+			// Desocultar resultados
+			$("#todosResultados").show();
 		}
 		
 		

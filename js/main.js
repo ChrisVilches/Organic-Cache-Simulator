@@ -111,7 +111,7 @@ var Cache = (function () {
                 sets[i][j] = -1;
             }
         }
-        resultado = "<table>";
+        resultado = "<table class=\"tablaCacheHitMiss\">";
         // Crear las cabeceras de la tabla
         resultado += "<tr>";
         resultado += "<th> </th>";
@@ -311,11 +311,14 @@ function procesarDirecciones() {
     cache.configurar(blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing);
     // Obtener tabla cronologica de resultados
     tablaResultado = cache.procesarDirecciones(direcciones);
-    // Obtener codigo mars
-    $("#textarea_codigomars").show();
+    // Obtener codigo mars			
     $("#textarea_codigomars").html(transpiladorMips.obtenerCodigoMips(direcciones, addressing));
+    // Mostrar tabla
     $("#tablaCacheResultado").html(tablaResultado);
+    // Mostrar cuenta hit y miss
     $("#hitMissRate").html("<p>Hits: <b>" + cache.hitCount + "</b></p><p>Miss: <b>" + cache.missCount + "</b></p><p>Hit rate: <b>" + cache.hitRate + "%</b></p>");
+    // Desocultar resultados
+    $("#todosResultados").show();
 }
 function crearArregloDirecciones() {
     // Todo lo que no es numero, transformarlo a espacio
