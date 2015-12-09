@@ -241,6 +241,10 @@ var Cache = (function () {
                 tag = resultado[i] + tag;
             }
         }
+        // Si el tag no tiene digitos, entonces colocarle algunos ceros
+        if (tag.length == 0) {
+            tag = "0000";
+        }
         return tag + "&nbsp;" + indice + "&nbsp;" + offset;
     };
     // Entrega el estado de cache en un determinado momento

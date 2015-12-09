@@ -276,6 +276,11 @@ class Cache{
 			}	
 		}
 		
+		// Si el tag no tiene digitos, entonces colocarle algunos ceros
+		if(tag.length == 0) {
+			tag = "0000";
+		}
+		
 		return tag + "&nbsp;" + indice + "&nbsp;" + offset;	
 	}
 	
