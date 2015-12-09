@@ -197,6 +197,8 @@ var Cache = (function () {
         }
         return max.toString(2).length;
     };
+    // Dado una direccion numerica, la convierte en binario, y ademas
+    // separa la string (usando espacios) en tag, indice y offset
     Cache.prototype.rellenarBinCeros = function (num, max) {
         var resultado = num.toString(2);
         var tag = "";
@@ -221,7 +223,7 @@ var Cache = (function () {
         for (; i > -1; i--) {
             tag = resultado[i] + tag;
         }
-        return tag + " " + indice + " " + offset;
+        return tag + "&nbsp;" + indice + "&nbsp;" + offset;
     };
     // Entrega el estado de cache en un determinado momento
     Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion, numBloque, numeroAcceso, bitsNecesarios) {
@@ -387,6 +389,8 @@ function procesarDirecciones() {
     $("#tablaCacheResultado").html(tablaResultado);
     // Mostrar cuenta hit y miss
     $("#hitMissRate").html("<p>Hits: <b>" + cache.hitCount + "</b></p><p>Miss: <b>" + cache.missCount + "</b></p><p>Hit rate: <b>" + cache.hitRate + "%</b></p>");
+    // Muestra cuantos bits necesita el indice y offset.
+    $("#bitsDireccion").html("<p>Bits indice: <b>" + cache.bitsIndice + "</b></p><p>Bits offset: <b>" + cache.bitsOffset + "</b></p>");
     // Desocultar resultados
     $("#todosResultados").show();
 }

@@ -229,7 +229,8 @@ class Cache{
 		
 	}
 	
-	
+	// Dado una direccion numerica, la convierte en binario, y ademas
+	// separa la string (usando espacios) en tag, indice y offset
 	private rellenarBinCeros(num : number, max : number) : string{
 		var resultado : string = num.toString(2);
 		var tag : string = "";
@@ -258,7 +259,7 @@ class Cache{
 			tag = resultado[i] + tag;
 		}
 		
-		return tag + " " + indice + " " + offset;	
+		return tag + "&nbsp;" + indice + "&nbsp;" + offset;	
 	}
 	
 	

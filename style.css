@@ -13,6 +13,10 @@ a:hover{
 	color:black;
 }
 
+td{
+	vertical-align: top;
+}
+
 div {
 	margin-bottom: 10px;
 	padding: 5px;
