@@ -231,32 +231,49 @@ class Cache{
 	
 	// Dado una direccion numerica, la convierte en binario, y ademas
 	// separa la string (usando espacios) en tag, indice y offset
-	private rellenarBinCeros(num : number, max : number) : string{
+	private rellenarBinCerosYDividir(num : number, max : number) : string{
 		var resultado : string = num.toString(2);
 		var tag : string = "";
 		var indice : string = "";
 		var offset : string = "";
 		var i : number;
 		var cont : number;
+		
+		// Agregar ceros hasta que se complete el tamano esperado
 		while(resultado.length < max){
 			resultado = "0"+resultado;
 		}
 		
-		i=resultado.length-1;
-		cont = 0;
-		for(cont=0; cont < this.bitsOffset; cont++){
-			offset = resultado[i] + offset;
-			i--;
+		// Ir agregando los digitos. En algunos casos podria ser que la
+		// string mas larga, tiene menos digitos que los digitos del
+		// offset e indice, en ese caso serian puros undefined,
+		// por eso en caso que sea undefined, le agrego un 0.		
+		
+		// Obtener el offset
+		for(cont=0, i=resultado.length-1; cont < this.bitsOffset; cont++, i--){
+			if(resultado[i] == undefined){
+				offset = "0" + offset;
+			} else {
+				offset = resultado[i] + offset;
+			}			
 		}
 		
-		cont = 0;
-		for(cont=0; cont < this.bitsIndice; cont++){
-			indice = resultado[i] + indice;
-			i--;
+		// Obtener el indice
+		for(cont=0; cont < this.bitsIndice; cont++, i--){
+			if(resultado[i] == undefined){
+				indice = "0" + indice;
+			} else {
+				indice = resultado[i] + indice;
+			}			
 		}
 		
+		// Obtener el tag
 		for(; i > -1; i--){
-			tag = resultado[i] + tag;
+			if(resultado[i] == undefined){
+				tag = "0" + tag;
+			} else {
+				tag = resultado[i] + tag;
+			}	
 		}
 		
 		return tag + "&nbsp;" + indice + "&nbsp;" + offset;	
@@ -283,7 +300,7 @@ class Cache{
 		cacheFila += "<td>"+direccion+"</td>";
 		
 		// Direccion (binario)
-		cacheFila += "<td>"+this.rellenarBinCeros(direccion, bitsNecesarios)+"</td>";
+		cacheFila += "<td>"+this.rellenarBinCerosYDividir(direccion, bitsNecesarios)+"</td>";
 		
 		// A que bloque pertenece
 		cacheFila += "<td>"+numBloque+"</td>";
