@@ -48,6 +48,10 @@ tr.miss{
 	background-color: #ffcccc;
 }
 
+th.noset{
+	background-color: #dedede;
+}
+
 table.tablaCacheHitMiss{
 	border-collapse: collapse;	
 }

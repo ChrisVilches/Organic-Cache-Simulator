@@ -54,6 +54,38 @@ var Cache = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Cache.prototype, "offsetTotal", {
+        // No entrega el numbero de bits que tiene el offset, si no
+        // el numero por el cual el numero debe ser dividido, para encontrar
+        // tag + indice (eliminar el offset)
+        get: function () {
+            if (this._tipoDireccion == tipoDireccion.BYTE) {
+                return this._blockSize * 4;
+            }
+            return this._blockSize;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Cache.prototype, "bitsOffset", {
+        // Numero de bits del offset
+        get: function () {
+            // Es necesario restarle 1 porque, por ejemplo si hay 4 palabras por bloque
+            // el numero binario es 100, es decir 4. Pero se pueden hacer cuatro combinaciones
+            // con solo 2 bits, 00 01 10 11, por lo tanto no es necesario 3 bits, si no 2.
+            return this.offsetTotal.toString(2).length - 1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Cache.prototype, "bitsIndice", {
+        // Obtiene la cantidad de bits necesarias para el indice
+        get: function () {
+            return this.numSets.toString(2).length - 1;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // Interfaz con la GUI, recibe la configuracion
     Cache.prototype.configurar = function (blocksize, nblocks, nvias, algoritmo, tipoAsociatividad, addressing) {
         this._blockSize = blocksize;
@@ -85,9 +117,9 @@ var Cache = (function () {
         var i;
         var j;
         var resultado = "";
-        // Reiniciar el cache
-        this._cacheHitCuenta = 0;
-        this._cacheMissCuenta = 0;
+        // Numero de bits necesarios para poder mostrar por pantalla
+        // la direccion mas larga del conjunto
+        var bitsNecesarios = this.encontrarCantidadDeBitsNecesarias(direcciones);
         // Numero de bloque de la direccion leida
         var numBloque;
         // Hacia donde mapea el bloque leido
@@ -99,6 +131,9 @@ var Cache = (function () {
         var palabra;
         // El estado del cache, hit o miss?
         var estadohitmiss;
+        // Reiniciar el cache
+        this._cacheHitCuenta = 0;
+        this._cacheMissCuenta = 0;
         // Crear sets
         sets = new Array(this.numSets);
         // Cada set tiene SET SIZE bloques
@@ -114,28 +149,20 @@ var Cache = (function () {
         resultado = "<table class=\"tablaCacheHitMiss\">";
         // Crear las cabeceras de la tabla
         resultado += "<tr>";
-        resultado += "<th> </th>";
-        resultado += "<th>#</th>";
-        resultado += "<th>direccion</th>";
-        resultado += "<th>binario</th>";
-        resultado += "<th>bloque #</th>";
+        resultado += "<th class=\"noset\"> </th>";
+        resultado += "<th class=\"noset\">#</th>";
+        resultado += "<th class=\"noset\">direccion</th>";
+        resultado += "<th class=\"noset\">binario <small>(tag indice offset)</small</th>";
+        resultado += "<th class=\"noset\">bloque #</th>";
         for (i = 0; i < this.numSets; i++) {
             resultado += "<th>set " + i + "</th>";
         }
         resultado += "</tr>";
         // Leer todas las direcciones
         for (i = 0; i < direcciones.length; i++) {
-            if (this._tipoDireccion == tipoDireccion.BYTE) {
-                // Si es por byte, hay que obtener a que palabra
-                // pertenece ese byte
-                palabra = Math.floor(direcciones[i] / 4); // 4 bytes por palabra
-            }
-            else {
-                // Se usa la palabra tal cual
-                palabra = direcciones[i];
-            }
+            palabra = direcciones[i];
             // La palabra se encuentra en el bloque
-            numBloque = Math.floor(palabra / this._blockSize);
+            numBloque = Math.floor(palabra / this.offsetTotal);
             // El bloque mapea a
             mapea = numBloque % this.numSets;
             // Ver si el bloque ya esta en cache
@@ -153,17 +180,55 @@ var Cache = (function () {
                 this._cacheMissCuenta++;
                 estadohitmiss = cacheEstado.MISS;
             }
-            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque, i);
+            resultado += this.obtenerFilaCacheActual(sets, estadohitmiss, direcciones[i], numBloque, i, bitsNecesarios);
         }
         resultado += "</table>";
         return resultado;
     };
+    // Dada un arreglo de direcciones, encuentra el numero de bits necesarios
+    // para poder representar en binario, la direccion mas larga del arreglo
+    Cache.prototype.encontrarCantidadDeBitsNecesarias = function (dir) {
+        var max = 0;
+        var i;
+        for (i = 0; i < dir.length; i++) {
+            if (dir[i] > max) {
+                max = dir[i];
+            }
+        }
+        return max.toString(2).length;
+    };
+    Cache.prototype.rellenarBinCeros = function (num, max) {
+        var resultado = num.toString(2);
+        var tag = "";
+        var indice = "";
+        var offset = "";
+        var i;
+        var cont;
+        while (resultado.length < max) {
+            resultado = "0" + resultado;
+        }
+        i = resultado.length - 1;
+        cont = 0;
+        for (cont = 0; cont < this.bitsOffset; cont++) {
+            offset = resultado[i] + offset;
+            i--;
+        }
+        cont = 0;
+        for (cont = 0; cont < this.bitsIndice; cont++) {
+            indice = resultado[i] + indice;
+            i--;
+        }
+        for (; i > -1; i--) {
+            tag = resultado[i] + tag;
+        }
+        return tag + " " + indice + " " + offset;
+    };
     // Entrega el estado de cache en un determinado momento
-    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion, numBloque, numeroAcceso) {
+    Cache.prototype.obtenerFilaCacheActual = function (sets, estadohitmiss, direccion, numBloque, numeroAcceso, bitsNecesarios) {
         var i;
         var j;
         var cacheFila;
-        // Agregar el estado
+        // Agregar el estado (hit/miss)			
         if (estadohitmiss == cacheEstado.HIT) {
             cacheFila = "<tr class=\"hit\"><td>H</td>";
         }
@@ -172,9 +237,11 @@ var Cache = (function () {
         }
         // Numero de acceso
         cacheFila += "<td>" + (numeroAcceso + 1) + "</td>";
-        // Colocar la direccion
+        // Colocar la direccion (decimal)
         cacheFila += "<td>" + direccion + "</td>";
-        cacheFila += "<td>" + (direccion.toString(2)) + "</td>";
+        // Direccion (binario)
+        cacheFila += "<td>" + this.rellenarBinCeros(direccion, bitsNecesarios) + "</td>";
+        // A que bloque pertenece
         cacheFila += "<td>" + numBloque + "</td>";
         // set[num set][num bloque]
         for (i = 0; i < this.numSets; i++) {
