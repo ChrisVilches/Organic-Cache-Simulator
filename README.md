@@ -12,26 +12,26 @@
 
 Instalar dependencias de Node:
 
-```
-npm install
+```shell
+$ npm install
 ```
 
 Instalar dependencias de Bower
 
-```
-bower install
+```shell
+$ bower install
 ```
 
 Compilar archivos Sass y Typescript, entre otras tareas
 
-```
-gulp
+```shell
+$ gulp
 ```
 
 Ejecutar usando servidor de Gulp (tambien puede arrastrarse el archivo ```index.html``` al navegador ya que no realiza peticiones HTTP dinamicamente)
 
-```
-gulp s
+```shell
+$ gulp s
 ```
 
 ## Tecnologias usadas
