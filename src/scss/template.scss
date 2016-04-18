@@ -1,3 +1,5 @@
+$orgaRed: #990000;
+
 html,body {
   height: 100%;
 }
@@ -10,7 +12,11 @@ html,body {
 
 .orga{
   font-weight: bold;
-  color:#990000;
+  color: $orgaRed;
+}
+
+.spaced {
+  margin: 0 10px;
 }
 
 hr.hrstyle {
@@ -65,8 +71,12 @@ body {
   color: #f9f9f9;
 }
 a {
-  color:#efefef;
+  color:#cccccc;
 }
+a:hover{
+  color:#ffffff;
+}
+
 .text-center {
   padding-top: 20px;
 }

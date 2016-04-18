@@ -3,7 +3,6 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
-  <title>Dark layout w/sidebar drawer menu</title>
   <meta name="generator" content="Bootply" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -30,11 +29,6 @@
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="#"><span class="orga">ORGA</span>nic cache simulator</a>
         </div>
       </div>
@@ -177,7 +171,7 @@
               <!-- Codigo transpilado -->
               <div class="col-md-6">
               <h3>Comprobar resultados en Mars</h3>
-              <p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars si se configura el cache de la misma manera (precaucion: algunas direcciones podrian estar fuera de rango y abortar ejecucion en MIPS antes de que se complete el programa.)</p>
+              <p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars <a href="http://courses.missouristate.edu/KenVollmar/MARS/" target="_blank">(Ir a sitio de descarga)</a> si se configura el cache de la misma manera (precaucion: algunas direcciones podrian estar fuera de rango y abortar ejecucion en MIPS antes de que se complete el programa.)</p>
               <textarea id="textarea_codigomars" onclick="this.select()" class="form-control" rows="5"></textarea>
           </div>
 
@@ -193,16 +187,11 @@
 
   <div id="footer"><!--footer-->
     <div class="container">
-      <div class="row">
-        <ul class="list-unstyled">
+      <div class="row text-center">
 
-          <li class="col-sm-6 col-xs-6">
-            Creado por Felipe Vilches C., USACH
-          </li>
-          <li class="col-sm-6 col-xs-6">
-              <a href="https://github.com/FeloVilches/Organic-Cache-Simulator" target="_blank">Repositorio Github</a>
-          </li>
-        </ul>
+          <span class="spaced">Creado por Felipe Vilches C., USACH</span>
+          <span class="spaced"><a href="https://github.com/FeloVilches/Organic-Cache-Simulator" target="_blank">Repositorio Github</a></span>
+
       </div><!--/row-->
 
     </div><!--/container-->
@@ -215,7 +204,6 @@
 
   <!-- inject:js -->
   <script src="js/compiled.js"></script>
-  <script src="js/template.js"></script>
   <!-- endinject -->  
 </body>
 </html>
