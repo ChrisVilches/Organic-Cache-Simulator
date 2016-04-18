@@ -3,17 +3,13 @@ var gulp = require('gulp');
 
 // Include Our Plugins
 var sass = require('gulp-sass');
-var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
 var cleancss = require('gulp-clean-css');
 var tsc = require('gulp-typescript');
 var sourcemaps = require('gulp-sourcemaps');
 var inject = require('gulp-inject');
 var server = require('gulp-server-livereload');
 var wiredep = require('wiredep').stream;
-var useref = require('gulp-useref');
-var gulpif = require('gulp-if');
 var bower = require('gulp-bower');
 
 
