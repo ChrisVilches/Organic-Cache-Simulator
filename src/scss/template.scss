@@ -17,6 +17,7 @@ html,body {
 
 .spaced {
   margin: 0 10px;
+  white-space: nowrap;
 }
 
 hr.hrstyle {
@@ -49,7 +50,7 @@ hr.hrstyle {
   border:0 solid #080808;
   border-top-width: 1px;
   margin-top:50px;
-  z-index:100;
+  z-index:100;  
 }
 
 #footer > .container {
