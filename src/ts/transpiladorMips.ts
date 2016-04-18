@@ -1,3 +1,4 @@
+/// <reference path="jquery.d.ts"/>
 namespace transpiladorMips {		
 	export function hexEncode(num : number) : string{
 		return "0x"+num.toString(16);

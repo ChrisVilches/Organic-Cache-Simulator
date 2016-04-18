@@ -1,0 +1,32 @@
+$hitColor: #000;
+$missColor: #ff8080;
+$noSetHeaderColor: #303030;
+
+td{
+	vertical-align: top;
+}
+
+tr.hit {
+	/*background-color: $hitColor;*/
+}
+
+tr.miss{
+	background-color: $missColor;
+}
+
+th.noset{
+	background-color: $noSetHeaderColor;
+}
+
+table.tablaCacheHitMiss{
+	border-collapse: collapse;	
+	display: block;
+    	overflow-x: auto;
+}
+
+table.tablaCacheHitMiss td, th{
+	padding:3px 10px;
+	border:1px solid #444444;	
+	
+}
+

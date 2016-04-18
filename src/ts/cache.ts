@@ -5,17 +5,17 @@ enum algoritmoReemplazo{
 		LRU,
 		MRU,
 		RANDOM
-};
+}
 
 enum tipoDireccion{
 	BYTE,
 	WORD
-};
+}
 
 enum cacheEstado{
 	HIT,
 	MISS
-};
+}
 
 
 class Cache{	
