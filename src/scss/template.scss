@@ -72,9 +72,11 @@ body {
 }
 a {
   color:#cccccc;
+
 }
-a:hover{
+a:hover, a:focus{
   color:#ffffff;
+  text-decoration: none;
 }
 
 .text-center {
@@ -92,6 +94,11 @@ a:hover{
   position:fixed;
   top:55;
   width:220px;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
 }
 
 #sidebar .affix-bottom {

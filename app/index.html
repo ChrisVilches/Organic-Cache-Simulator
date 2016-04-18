@@ -54,35 +54,35 @@
 
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Tamaño de bloque (palabras)</label>
+                      <label class="col-sm-6 control-label" for="config_blocksize">Tamaño de bloque (palabras)</label>
                       <div class="col-sm-6"><input class="form-control" type="text" id="config_blocksize" onblur="validarConfiguracion();"></div>
                       </div>
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Cantidad de bloques</label>
+                      <label class="col-sm-6 control-label" for="config_nblocks">Cantidad de bloques</label>
                       <div class="col-sm-6"><input class="form-control" type="text" id="config_nblocks" onblur="validarConfiguracion();"></div>
                       </div>
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Numero de vias (n-asociativo)</label>
+                      <label class="col-sm-6 control-label" for="config_nvias">Numero de vias (n-asociativo)</label>
                       <div class="col-sm-6"><input class="form-control" type="text" id="config_nvias" onblur="validarConfiguracion();"></div>
                       </div>
 
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Cantidad de sets</label>
+                      <label class="col-sm-6 control-label">Cantidad de sets</label>
                       <div class="col-sm-6"><span id="info_nsets"></span></div>
                       </div>
 
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Tamaño cache</label>
+                      <label class="col-sm-6 control-label">Tamaño cache</label>
                       <div class="col-sm-6"><span id="info_cachesize"></span></div>
                       </div>
 
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Direccionamiento</label>
+                      <label class="col-sm-6 control-label">Direccionamiento</label>
                       <div class="col-sm-6">
                                             <select onchange="validarConfiguracion();" id="config_addressing" class="form-control">
                                             <option value="w">WORD</option>
@@ -93,7 +93,7 @@
 
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Algoritmo de reemplazo</label>
+                      <label class="col-sm-6 control-label">Algoritmo de reemplazo</label>
                       <div class="col-sm-6">
                                             <select onchange="validarConfiguracion();" id="config_algoritmo" class="form-control">
                                             <option value="lru">LRU</option>
@@ -105,7 +105,7 @@
 
 
                       <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="sm">Asociatividad</label>
+                      <label class="col-sm-6 control-label">Asociatividad</label>
                       <div class="col-sm-6">
                                         <select onchange="validarConfiguracion();" id="config_tipoasociatividad" class="form-control">
                                             <option value="md">Mapeo directo</option>
@@ -169,10 +169,10 @@
               </div>
 
               <!-- Codigo transpilado -->
-              <div class="col-md-6">
-              <h3>Comprobar resultados en Mars</h3>
-              <p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars <a href="http://courses.missouristate.edu/KenVollmar/MARS/" target="_blank">(Ir a sitio de descarga)</a> si se configura el cache de la misma manera (precaucion: algunas direcciones podrian estar fuera de rango y abortar ejecucion en MIPS antes de que se complete el programa.)</p>
-              <textarea id="textarea_codigomars" onclick="this.select()" class="form-control" rows="5"></textarea>
+              <div class="col-md-6 nopadding">
+                <h3>Comprobar resultados en Mars</h3>
+                <p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars <a href="http://courses.missouristate.edu/KenVollmar/MARS/" target="_blank">(Ir a sitio de descarga)</a> si se configura el cache de la misma manera (precaucion: algunas direcciones podrian estar fuera de rango y abortar ejecucion en MIPS antes de que se complete el programa.)</p>
+                <textarea id="textarea_codigomars" onclick="this.select()" class="form-control" rows="5"></textarea>
           </div>
 
 
