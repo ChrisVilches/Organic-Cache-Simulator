@@ -148,6 +148,35 @@
 
             <hr class="hrstyle">
 
+
+            <div class="col-md-12 small">
+
+            <div class="col-md-2 nopadding">
+              <div id="hitMissRate"></div>         
+            </div>
+            <div class="col-md-2  nopadding">
+              <div id="bitsDireccion"> </div>              
+            </div>
+
+            <div class="col-md-8  nopadding">
+
+
+                        <dl class="dl-horizontal">
+                            <dt>bloque #</dt>
+                            <dd>Numero del bloque al que la palabra pertenece.</dd>
+                            <dt>set #</dt>
+                            <dd>
+                              Numero del set. 
+                              Muestra los <var>n</var> bloques (identificados por su numero de bloque) almacenados en este set (<var>n</var> = numero de vias).
+                              Mapeo directo tiene <var>n</var> = 1, y full asociativo tiene <var>n</var> igual al numero de bloques total en cache.
+                        </dl>
+
+
+
+            </div>
+
+            </div>
+
               <table>
                 <tr>
                   <td>
@@ -165,11 +194,11 @@
 
 
               <!-- La tabla de resultados -->
-              <div id="tablaCacheResultado" class="top-buffer">      
+              <div id="tablaCacheResultado" class="top-buffer col-md-12">      
               </div>
 
               <!-- Codigo transpilado -->
-              <div class="col-md-6 nopadding">
+              <div class="col-md-6">
                 <h3>Comprobar resultados en Mars</h3>
                 <p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars <a href="http://courses.missouristate.edu/KenVollmar/MARS/" target="_blank">(Ir a sitio de descarga)</a> si se configura el cache de la misma manera (precaucion: algunas direcciones podrian estar fuera de rango y abortar ejecucion en MIPS antes de que se complete el programa.)</p>
                 <textarea id="textarea_codigomars" onclick="this.select()" class="form-control" rows="5"></textarea>
