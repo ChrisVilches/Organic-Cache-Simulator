@@ -1,7 +1,7 @@
 		/// <reference path="jquery.d.ts"/>
 		/// <reference path="cache.ts"/>
         /// <reference path="transpiladorMips.ts"/>
-		
+
 		var blocksize : number;
 		var nblocks : number;
 		var nvias : number;

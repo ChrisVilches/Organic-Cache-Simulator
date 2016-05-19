@@ -28,6 +28,14 @@ Compilar archivos Sass y Typescript, entre otras tareas:
 $ gulp
 ```
 
+Comenzar servidor:
+
+```shell
+$ npm start
+```
+
+Y luego ir a ```http://localhost:3000/``` para ver la pagina.
+
 
 ## Tecnologias usadas
 
@@ -37,3 +45,5 @@ $ gulp
 4. Sass (.scss)
 5. Gulp
 6. Bower
+7. Express (framework de NodeJS)
+8. NodeJS
