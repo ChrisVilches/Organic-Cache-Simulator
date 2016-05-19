@@ -28,11 +28,6 @@ Compilar archivos Sass y Typescript, entre otras tareas:
 $ gulp
 ```
 
-Ejecutar usando servidor de Gulp (tambien puede arrastrarse el archivo ```index.html``` al navegador ya que no realiza peticiones HTTP dinamicamente):
-
-```shell
-$ gulp s
-```
 
 ## Tecnologias usadas
 
