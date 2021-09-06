@@ -4,31 +4,28 @@
   "description": "Cache simulator",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "start": "node ./bin/www"
   },
   "author": "Felo Vilches",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "~1.13.2",
-    "bower": "^1.7.9",
-    "cookie-parser": "~1.3.5",
-    "debug": "~2.2.0",
-    "express": "~4.13.1",
+    "body-parser": "~1.19.0",
+    "cookie-parser": "~1.4.5",
+    "debug": "~4.3.2",
+    "express": "~4.17.1",
     "jade": "~1.11.0",
-    "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
+    "morgan": "~1.10.0",
+    "serve-favicon": "~2.5.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-bower": "0.0.13",
-    "gulp-clean-css": "^2.0.6",
-    "gulp-inject": "^4.0.0",
-    "gulp-sass": "^2.2.0",
-    "gulp-server-livereload": "^1.7.4",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": "^2.13.0",
-    "gulp-uglify": "^1.5.3",
-    "wiredep": "^4.0.0"
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-inject": "^5.0.5",
+    "gulp-sass": "^5.0.0",
+    "gulp-server-livereload": "^1.9.2",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "node-sass": "^6.0.1"
   }
 }

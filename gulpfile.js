@@ -2,85 +2,47 @@
 var gulp = require('gulp');
 
 // Include Our Plugins
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('node-sass'));
 var uglify = require('gulp-uglify');
 var cleancss = require('gulp-clean-css');
 var tsc = require('gulp-typescript');
 var sourcemaps = require('gulp-sourcemaps');
-var inject = require('gulp-inject');
-var wiredep = require('wiredep').stream;
-var bower = require('gulp-bower');
 
+var sourceScss = "src/scss";
+var sourceTs = "src/ts";
 
-var serverConfig = {
-	livereload: true,
-	port: 9000,
-	open: true
-};
+var destCss = "public/stylesheets";
+var destJs = "public/javascripts";
 
-var source_scss = "src/scss";
-var source_ts = "src/ts";
-
-var dest_css = "public/stylesheets";
-var dest_js = "public/javascripts";
-
-var public = "public";
-
+// TODO: Task file might be incorrect, since some tasks take a lot of time to finish.
+//       Upgraded Gulp version and had to revamp everything without reading documentation.
 
 // Compile Sass
-gulp.task('sass', function(){
-	return gulp.src(source_scss+'/*.scss')
-	.pipe(sass())
-	.pipe(cleancss())
-	.pipe(gulp.dest(dest_css));
+gulp.task('sass', async function(){
+	return gulp.src(sourceScss+'/*.scss')
+						 .pipe(sass())
+						 .pipe(cleancss())
+						 .pipe(gulp.dest(destCss));
 });
 
 // Concatenate & Minify JS
-gulp.task('compileScripts', function(){
-	return gulp.src(source_ts+'/*.ts')
-	.pipe(sourcemaps.init())
-	.pipe(tsc({
-		target: 'ES5',
-		out: 'compiled.js'
-	}))	
-	.pipe(uglify())
-	.pipe(sourcemaps.write('/'))
-	.pipe(gulp.dest(dest_js));
+gulp.task('ts', async function(){
+	return gulp.src(sourceTs+'/*.ts')
+						 .pipe(sourcemaps.init())
+						 .pipe(tsc({
+						   target: 'ES5',
+						   out: 'compiled.js'
+						 }))	
+						 .pipe(uglify())
+						 .pipe(sourcemaps.write('/'))
+						 .pipe(gulp.dest(destJs));
 });
-
-// Inject CSS and JS
-gulp.task('inject', ['compileScripts', 'sass'],function(){
-
-	var sourceOptions = {
-		read: false, 
-		cwd: __dirname + "/" + public
-	};
-
-	var injectOptions = {
-		addRootSlash: false
-	};
-
-	var target = gulp.src('./views/*.html');
-	var sources = gulp.src(['stylesheets/*.css', 'javascripts/*.js'], sourceOptions);
-	return target.pipe(inject(sources, injectOptions))
-	.pipe(gulp.dest('./views'));
-});
-
 
 // Watch
 gulp.task('watch', function(){
 	// Compile SCSS & Typescript
-	gulp.watch(source_ts+'/*.ts', ['compileScripts', 'inject']);
-	gulp.watch(source_scss+'/*.scss', ['sass', 'inject']);
+	gulp.watch(sourceTs+'/*.ts', gulp.series('ts'));
+	gulp.watch(sourceScss+'/*.scss', gulp.series('sass'));
 });
 
-
-// Wire Bower dependencies to HTML
-gulp.task('wiredep', function () {
-	
-	gulp.src('views/index.html')
-	.pipe(wiredep({ignorePath: '../public/'}))
-	.pipe(gulp.dest('views')); 
-});
-
-gulp.task('default', ['sass', 'compileScripts', 'inject', 'watch']);
+gulp.task('default', gulp.parallel('sass', 'ts'));

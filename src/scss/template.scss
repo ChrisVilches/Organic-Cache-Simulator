@@ -10,6 +10,10 @@ html,body {
   border:black;
 }
 
+#span_error:empty{
+  display: none;
+}
+
 .orga{
   font-weight: bold;
   color: $orgaRed;

@@ -1,49 +1,59 @@
 # Organic Cache Simulator
 
-## Caracteristicas
-1. Permite ingresar direcciones a memoria separadas por coma o espacio
-2. Las direcciones pueden ser a bytes o a palabras
-3. Configuracion de asociatividad (vias), tamaño de bloque, etc
-4. Maquina de 32 bits
-5. Entrega tasa de hit
-6. Muestra la tabla cronologica de como va variando el contenido del cache
+Cache simulator. Originally made for learning during University.
 
-## Instalacion y compilacion
+Live Demo: http://cloud.chrisvilches.com/live_demos/organic-cache-simulator/
 
-Instalar dependencias de Node:
+## Features
 
-```shell
-$ npm install
+1. User can input addresses separated by comma or newlines.
+2. Addresses can be word or byte.
+3. Configure associativity, block size, etc.
+4. 32 bits machine.
+5. Display hit rate.
+6. Display cache history.
+
+## Installation and build
+
+Install Node dependencies:
+
+```bash
+npm install
 ```
 
-Instalar dependencias de Bower:
+Compile Typescript, Sass, and other tasks. 
 
-```shell
-$ bower install
+```bash
+gulp
 ```
 
-Compilar archivos Sass y Typescript, entre otras tareas:
+Start server:
 
-```shell
-$ gulp
+```bash
+npm start
 ```
 
-Comenzar servidor:
+Open `http://localhost:3000/` to see the website.
 
-```shell
-$ npm start
+## Deploy as static page
+
+It's not necessary to run a Express.js app, since the app is static (Express was originally used to deploy to Heroku). Execute this command to generate a static distribution.
+
+Note: The app must be previously compiled using `gulp`.
+
+```bash
+./generate_static_dist.sh
 ```
 
-Y luego ir a ```http://localhost:3000/``` para ver la pagina.
+This will generate a HTML/CSS/JS/assets only folder (no Typescript, etc).
 
-
-## Tecnologias usadas
+## Technologies used
 
 1. Typescript
 2. Bootstrap
 3. jQuery
-4. Sass (.scss)
+4. Sass
 5. Gulp
-6. Bower
-7. Express (framework de NodeJS)
-8. NodeJS
+6. Bower (not used anymore)
+7. NodeJS
+8. Express

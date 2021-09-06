@@ -1,5 +1,5 @@
 		/// <reference path="jquery.d.ts"/>
-		/// <reference path="cache.ts"/>
+		/// <reference path="cacheSimulator.ts"/>
         /// <reference path="transpiladorMips.ts"/>
 
 		var blocksize : number;
@@ -10,7 +10,7 @@
 		var tipoAsociatividad : string;
 		var addressing : string;
 		
-		var cache : Cache;
+		var cache : CacheSimulator;
 		
 		
 		/*
@@ -20,9 +20,6 @@
 		*/
 		
 		$(document).ready(function(){
-			
-			document.title = "Organic Cache Simulator";
-
 			// Configuracion inicial
 			
 			$("#config_blocksize").val((4).toString());
@@ -30,20 +27,33 @@
 			$("#config_nvias").val((4).toString());	
 			validarConfiguracion();	
 			
-			cache = new Cache();	
+			cache = new CacheSimulator();	
 			
 			
 			// Evento mouse
 			
-			$("#btn_procesar").click(function(){	
-				procesarDirecciones();			
-			});
-			
-					
+			$("#btn_procesar").click(procesarDirecciones);
+			$("#btn_random").click(setRandomExample);
+
+			setRandomExample();
 		});
 		
 		
-		
+		// Agrega un ejemplo aleatorio (lo ingresa en el textarea, y lo ejecuta).
+		function setRandomExample() {
+			const rand = () => {
+				return Math.ceil(Math.random() * 100);
+			}
+
+			var values = Array(30);
+			for(var i=0; i<values.length; i++){
+				values[i] = rand();
+			}
+
+			$("#textarea_direcciones").val(values.join(', '));
+
+			procesarDirecciones();
+		}
 		
 		function isPowerOfTwo(x : number) : Boolean{
 			while (((x % 2) == 0) && x > 1)
@@ -75,7 +85,7 @@
 			// Validar direcciones
 			direcciones = crearArregloDirecciones();			
 			if(direcciones == null){
-				mostrarError("Ingresar direcciones correctamente");
+				mostrarError("Enter addresses correctly.");
 				return;
 			}
 			
@@ -95,7 +105,7 @@
 			$("#hitMissRate").html("<p>Hits: <b>"+cache.hitCount+"</b></p><p>Miss: <b>"+cache.missCount+"</b></p><p>Hit rate: <b>"+cache.hitRate+"%</b></p>");
 			
 			// Muestra cuantos bits necesita el indice y offset.
-			$("#bitsDireccion").html("<p>Bits indice: <b>"+cache.bitsIndice+"</b></p><p>Bits offset: <b>"+cache.bitsOffset+"</b></p>");
+			$("#bitsDireccion").html("<p>Index bits: <b>"+cache.bitsIndice+"</b></p><p>Offset bits: <b>"+cache.bitsOffset+"</b></p>");
 			
 			// Desocultar resultados
 			$("#todosResultados").show();
@@ -108,7 +118,7 @@
 			var arregloDirecciones : number[];
 			var arregloSplit : string[];
 			var i : number;
-			var textoProcesado : string = $("#textarea_direcciones").val().replace(/[^0-9]+/g, " ");
+			var textoProcesado : string = $("#textarea_direcciones").val().toString().replace(/[^0-9]+/g, " ");
 			
 			// Eliminar los espacios de sobra
 			textoProcesado = textoProcesado.trim();
@@ -141,9 +151,9 @@
 			var input_nblocks : number = Number($("#config_nblocks").val());
 			var input_nvias : number = Number($("#config_nvias").val());	
 					
-			var input_asociatividad : string = $("#config_tipoasociatividad").val();
-			var input_algoritmo : string = $("#config_algoritmo").val();
-			var input_addressing : string = $("#config_addressing").val();
+			var input_asociatividad : string = $("#config_tipoasociatividad").val().toString();
+			var input_algoritmo : string = $("#config_algoritmo").val().toString();
+			var input_addressing : string = $("#config_addressing").val().toString();
 			
 			// No puede haber mas bloques que vias, se cambia
 			if(input_nvias > input_nblocks){
@@ -155,30 +165,30 @@
 			// Validar cada uno
 		
 			if(!numeroCorrecto(input_blocksize)){
-				mostrarError("Tamaño de bloque no es correcto. Debe ser numero entero, potencia de 2.");
+				mostrarError("Block size is incorrect. It must be a power of 2 integer.");
 				return false;
 			}
 			if(!numeroCorrecto(input_nblocks)){
-				mostrarError("Numero de bloques no es correcto. Debe ser numero entero, potencia de 2.");
+				mostrarError("Number of blocks is incorrect. It must be a power of 2 integer.");
 				return false;
 			}
 			if(tipoAsociatividad == "sa" && !numeroCorrecto(input_nvias)){
-				mostrarError("Numero de vias no es correcto. Debe ser numero entero, potencia de 2.");
+				mostrarError("Number of ways is incorrect. It must be a power of 2 integer.");
 				return false;
 			}
 			
 			if(!(input_asociatividad == "md" || input_asociatividad == "sa" || input_asociatividad == "fa")){
-				mostrarError("Asociatividad incorrecta.");
+				mostrarError("Incorrect associativity.");
 				return false;
 			}
 			
 			if(!(input_algoritmo == "lru" || input_algoritmo == "mru" || input_algoritmo == "random")){
-				mostrarError("Algoritmo incorrecto.");
+				mostrarError("Incorrect algorithm.");
 				return false;
 			}
 			
 			if(!(input_addressing == "w" || input_addressing == "b")){
-				mostrarError("Tipo de addressing incorrecto.");
+				mostrarError("Incorrect addressing type.");
 				return false;
 			}
 						
@@ -218,7 +228,7 @@
 			
 			// Mostrar informacion (no input de texto)
 			$("#info_nsets").text((nblocks / nvias).toString());							
-			$("#info_cachesize").text((nblocks * blocksize * 4) + " bytes ("+(nblocks * blocksize)+" palabras)");
+			$("#info_cachesize").text((nblocks * blocksize * 4) + " bytes ("+(nblocks * blocksize)+" words)");
 			
 			mostrarError("");
 			

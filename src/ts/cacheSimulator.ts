@@ -17,8 +17,8 @@ enum cacheEstado{
 	MISS
 }
 
-
-class Cache{	
+// Cannot use "Cache" because it already exists.
+class CacheSimulator{	
 
 	private _blockSize : number;
 	private _nBlocks : number;	
@@ -167,9 +167,9 @@ class Cache{
 		resultado += "<tr>";
 		resultado += "<th class=\"noset\"> </th>";
 		resultado += "<th class=\"noset\">#</th>";
-		resultado += "<th class=\"noset\">direccion</th>";
-		resultado += "<th class=\"noset\">binario <small>(tag indice offset)</small</th>";
-		resultado += "<th class=\"noset\">bloque #</th>";				
+		resultado += "<th class=\"noset\">address</th>";
+		resultado += "<th class=\"noset\">binary<br/><small>(tag index offset)</small</th>";
+		resultado += "<th class=\"noset\">block #</th>";				
 		
 		for(i=0; i<this.numSets; i++){
 			resultado += "<th>set "+i+"</th>";

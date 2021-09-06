@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
@@ -8,21 +9,16 @@
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <title>ORGAnic cache simulator</title>
 
-<!--[if lt IE 9]>
-<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-<!-- inject:css -->
-<link rel="stylesheet" href="stylesheets/cachetable.css">
-<link rel="stylesheet" href="stylesheets/template.css">
-<!-- endinject -->
-
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/cachetable.css">
+  <link rel="stylesheet" href="stylesheets/template.css">
 </head>
+
 <body>
   <div class="page-container">
-
     <!-- top navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -34,187 +30,159 @@
 
     <div class="container">
       <div class="row row-offcanvas row-offcanvas-left">
-
-
         <!-- main area -->
         <div class="col-xs-12 col-md-12 top-buffer" data-spy="scroll" data-target="#sidebar-nav">
           <div class="section">
-            
-
             <div class="col-md-6">
-                 <!-- Configuracion -->
+              <!-- Configuracion -->
+              <div class="form-horizontal" role="form">
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label" for="config_blocksize">Block size (words)</label>
+                  <div class="col-sm-6"><input class="form-control" type="text" id="config_blocksize"
+                      onblur="validarConfiguracion();"></div>
+                </div>
 
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label" for="config_nblocks">Number of blocks</label>
+                  <div class="col-sm-6"><input class="form-control" type="text" id="config_nblocks"
+                      onblur="validarConfiguracion();"></div>
+                </div>
 
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label" for="config_nvias">Number of ways (N-way set
+                    associative)</label>
+                  <div class="col-sm-6"><input class="form-control" type="text" id="config_nvias"
+                      onblur="validarConfiguracion();"></div>
+                </div>
 
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label">Set number</label>
+                  <div class="col-sm-6"><span id="info_nsets"></span></div>
+                </div>
 
-                <div class="form-horizontal" role="form">
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label">Cache size</label>
+                  <div class="col-sm-6"><span id="info_cachesize"></span></div>
+                </div>
 
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label">Addressing</label>
+                  <div class="col-sm-6">
+                    <select onchange="validarConfiguracion();" id="config_addressing" class="form-control">
+                      <option value="w">WORD</option>
+                      <option value="b">BYTE</option>
+                    </select>
+                  </div>
+                </div>
 
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label">Replacement algorithm</label>
+                  <div class="col-sm-6">
+                    <select onchange="validarConfiguracion();" id="config_algoritmo" class="form-control">
+                      <option value="lru">LRU</option>
+                      <option value="mru">MRU</option>
+                      <option value="random">RANDOM</option>
+                    </select>
+                  </div>
+                </div>
 
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="config_blocksize">Tamaño de bloque (palabras)</label>
-                      <div class="col-sm-6"><input class="form-control" type="text" id="config_blocksize" onblur="validarConfiguracion();"></div>
-                      </div>
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="config_nblocks">Cantidad de bloques</label>
-                      <div class="col-sm-6"><input class="form-control" type="text" id="config_nblocks" onblur="validarConfiguracion();"></div>
-                      </div>
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label" for="config_nvias">Numero de vias (n-asociativo)</label>
-                      <div class="col-sm-6"><input class="form-control" type="text" id="config_nvias" onblur="validarConfiguracion();"></div>
-                      </div>
-
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label">Cantidad de sets</label>
-                      <div class="col-sm-6"><span id="info_nsets"></span></div>
-                      </div>
-
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label">Tamaño cache</label>
-                      <div class="col-sm-6"><span id="info_cachesize"></span></div>
-                      </div>
-
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label">Direccionamiento</label>
-                      <div class="col-sm-6">
-                                            <select onchange="validarConfiguracion();" id="config_addressing" class="form-control">
-                                            <option value="w">WORD</option>
-                                            <option value="b">BYTE</option>
-                                          </select>
-                      </div>
-                      </div>
-
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label">Algoritmo de reemplazo</label>
-                      <div class="col-sm-6">
-                                            <select onchange="validarConfiguracion();" id="config_algoritmo" class="form-control">
-                                            <option value="lru">LRU</option>
-                                            <option value="mru">MRU</option>
-                                            <option value="random">RANDOM</option>
-                                          </select>
-                      </div>
-                      </div>
-
-
-                      <div class="form-group form-group-sm">
-                      <label class="col-sm-6 control-label">Asociatividad</label>
-                      <div class="col-sm-6">
-                                        <select onchange="validarConfiguracion();" id="config_tipoasociatividad" class="form-control">
-                                            <option value="md">Mapeo directo</option>
-                                            <option value="sa">Set asociativo</option>
-                                            <option value="fa">Full asociativo</option>
-                                          </select> 
-                      </div>
-                      </div>
-
-</div>
-
-
-
-
+                <div class="form-group form-group-sm">
+                  <label class="col-sm-6 control-label">Associativity</label>
+                  <div class="col-sm-6">
+                    <select onchange="validarConfiguracion();" id="config_tipoasociatividad" class="form-control">
+                      <option value="md">Direct-Mapped</option>
+                      <option value="sa">Set-Associative</option>
+                      <option value="fa">Fully Associative</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="col-md-6">
-              
-
-
               <div class="form-group">
-              <label class="control-label"  for="inputdefault">Ingresar direcciones en base decimal (ej: 6,34,10,23,100,...)</label>
-              <textarea class="form-control" rows="5" id="textarea_direcciones" placeholder="Separar numeros usando comas, espacios, saltos de linea, etc (cualquier caracter)"></textarea>
-            </div>
-
+                <label class="control-label" for="inputdefault">Addresses in decimal base (e.g.
+                  6,34,10,23,100,...)</label>
+                <textarea class="form-control" rows="5" id="textarea_direcciones"
+                  placeholder="Comma separated values 6,34,10,23,100"></textarea>
+              </div>
 
               <!-- Ingresar direcciones -->
-              
 
               <!-- Procesar direcciones -->
-              <button id="btn_procesar" class="btn btn-default">OK</button>      
+              <button id="btn_procesar" class="btn btn-default">OK</button>
+              <button id="btn_random" class="btn btn-default">Random</button>
 
               <!-- Errores -->
               <div class="alert alert-danger top-buffer" id="span_error">
-            </div>
+              </div>
             </div>
 
-           
             <div class="col-md-12" style="display:none" id="todosResultados">
+              <hr class="hrstyle">
+              <div class="col-md-2 nopadding small">
+                <div id="hitMissRate"></div>
+              </div>
+              <div class="col-md-2  nopadding small">
+                <div id="bitsDireccion"> </div>
+              </div>
 
-            <hr class="hrstyle">
-
-
-
-            <div class="col-md-2 nopadding small">
-              <div id="hitMissRate"></div>         
-            </div>
-            <div class="col-md-2  nopadding small">
-              <div id="bitsDireccion"> </div>              
-            </div>
-
-            <div class="col-md-8  nopadding small">
-
-
-                        <dl class="dl-horizontal">
-                            <dt>bloque #</dt>
-                            <dd>Numero del bloque al que la palabra pertenece.</dd>
-                            <dt>set #</dt>
-                            <dd>
-                              Numero del set. 
-                              Muestra los <var>n</var> bloques (identificados por su numero de bloque) almacenados en cada set (<var>n</var> = numero de vias).
-                              Mapeo directo tiene <var>n</var> = 1, y full asociativo tiene <var>n</var> igual al numero de bloques total en cache.
-                        </dl>
-
-
-
-            </div>
-
-            
-
-
+              <div class="col-md-8  nopadding small">
+                <dl class="dl-horizontal">
+                  <dt>block #</dt>
+                  <dd>Index of block to which word belongs to.</dd>
+                  <dt>set #</dt>
+                  <dd>
+                    Set number.
+                    Shows the <var>n</var> blocks (identified by block index) stored in each set
+                    (<var>n</var> = number of ways).
+                    <!--Mapeo directo tiene <var>n</var> = 1, y full asociativo tiene <var>n</var> igual al numero de
+                    bloques total en cache.-->
+                </dl>
+              </div>
               <!-- La tabla de resultados -->
-              <div id="tablaCacheResultado" class="top-buffer col-md-12 nopadding">      
+              <div id="tablaCacheResultado" class="top-buffer col-md-12 nopadding">
               </div>
 
               <!-- Codigo transpilado -->
               <div class="col-md-6 nopadding">
-                <h3>Comprobar resultados en Mars</h3>
-                <p>El siguiente codigo MIPS contiene accesos a memoria equivalentes, y arroja los mismos resultados en Mars <a href="http://courses.missouristate.edu/KenVollmar/MARS/" target="_blank">(Ir a sitio de descarga)</a> si se configura el cache de la misma manera (precaucion: algunas direcciones podrian estar fuera de rango y abortar ejecucion en MIPS antes de que se complete el programa.)</p>
+                <h3>Use Mars to verify results</h3>
+                <p>The following MIPS code contains equivalent memory accesses, and returns the same results when
+                  executed in Mars <a href="http://courses.missouristate.edu/KenVollmar/MARS/" target="_blank">(official site)</a>
+                  when the cache is configured the same way.</p>
                 <textarea id="textarea_codigomars" onclick="this.select()" class="form-control" rows="5"></textarea>
-          </div>
+              </div>
+            </div>
+          </div><!-- /.col-xs-12 main -->
+        </div>
+        <!--/.row-->
+      </div>
+      <!--/.container-->
+    </div>
+    <!--/.page-container-->
 
-
-          </div>
-
-
-        </div><!-- /.col-xs-12 main -->
-      </div><!--/.row-->
-    </div><!--/.container-->
-  </div><!--/.page-container-->
-
-
-  <div id="footer"><!--footer-->
-    <div class="container">
-      <div class="row text-center">
-
-          <span class="spaced">Creado por Felipe Vilches C., USACH</span>
-          <span class="spaced"><a href="https://github.com/FeloVilches/Organic-Cache-Simulator" target="_blank">Repositorio Github</a></span>
-
-      </div><!--/row-->
-
-    </div><!--/container-->
-  </div><!--/footer-->
-
-  <!-- bower:js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha512-SFaNb3xC08k/Wf6CRM1J+O/vv4YWyrPBSdy0o+1nqKzf+uLrIBnaeo8aYoAAOd31nMNHwX8zwVwTMbbCJjA8Kg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <!-- endbower -->
-
-  <!-- inject:js -->
-  <script src="javascripts/compiled.js"></script>
-  <!-- endinject -->  
+    <div id="footer">
+      <!--footer-->
+      <div class="container">
+        <div class="row text-center">
+          <span class="spaced">
+            By <a href="http://www.chrisvilches.com/" target="_blank">Chris Vilches</a>
+          </span>
+          <span class="spaced">
+            <a href="https://github.com/ChrisVilches/Organic-Cache-Simulator" target="_blank">
+              Github Repository
+            </a>
+          </span>
+        </div>
+        <!--/row-->
+      </div>
+      <!--/container-->
+    </div>
+    <!--/footer-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"
+      integrity="sha512-SFaNb3xC08k/Wf6CRM1J+O/vv4YWyrPBSdy0o+1nqKzf+uLrIBnaeo8aYoAAOd31nMNHwX8zwVwTMbbCJjA8Kg=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="javascripts/compiled.js"></script>
 </body>
 </html>
