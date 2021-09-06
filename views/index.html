@@ -118,21 +118,21 @@
               </div>
             </div>
 
-            <div class="col-md-12" style="display:none" id="todosResultados">
+            <div class="col-md-12 col-sm-12" style="display:none" id="todosResultados">
               <hr class="hrstyle">
-              <div class="col-md-2 nopadding small">
+              <div class="col-md-2 col-sm-2 nopadding small">
                 <div id="hitMissRate"></div>
               </div>
-              <div class="col-md-2  nopadding small">
+              <div class="col-md-2 col-sm-2 nopadding small">
                 <div id="bitsDireccion"> </div>
               </div>
 
-              <div class="col-md-8  nopadding small">
+              <div class="col-md-8 col-sm-8 nopadding small">
                 <dl class="dl-horizontal">
                   <dt>block #</dt>
-                  <dd>Index of block to which word belongs to.</dd>
+                  <dd class="result-item-definition">Index of block to which word belongs to.</dd>
                   <dt>set #</dt>
-                  <dd>
+                  <dd class="result-item-definition">
                     Set number.
                     Shows the <var>n</var> blocks (identified by block index) stored in each set
                     (<var>n</var> = number of ways).
@@ -141,7 +141,7 @@
                 </dl>
               </div>
               <!-- La tabla de resultados -->
-              <div id="tablaCacheResultado" class="top-buffer col-md-12 nopadding">
+              <div id="tablaCacheResultado" class="top-buffer col-md-12 col-sm-12 nopadding">
               </div>
 
               <!-- Codigo transpilado -->
@@ -183,6 +183,7 @@
       integrity="sha512-SFaNb3xC08k/Wf6CRM1J+O/vv4YWyrPBSdy0o+1nqKzf+uLrIBnaeo8aYoAAOd31nMNHwX8zwVwTMbbCJjA8Kg=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/d72a37b632.js"></script>
     <script src="javascripts/compiled.js"></script>
 </body>
 </html>

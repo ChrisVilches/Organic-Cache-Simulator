@@ -43,8 +43,6 @@ hr.hrstyle {
   height: 100%;
   /* negative indent footer by its height */
   margin: 0 auto -120px;
-  /* pad bottom by footer height */
-  padding: 0 0 120px;
 }
 
 /* set the fixed height of the footer here */
@@ -190,3 +188,10 @@ a:hover, a:focus{
   }
 }
 
+.result-item-icon{
+  padding-right: 10px;
+}
+
+.result-item-definition{
+  margin-bottom: 5px;
+}

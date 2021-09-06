@@ -100,12 +100,14 @@
 			
 			// Mostrar tabla
 			$("#tablaCacheResultado").html(tablaResultado);
+
+			var iconHtml = "<i class='fa fa-angle-right result-item-icon'></i>";
 			
 			// Mostrar cuenta hit y miss
-			$("#hitMissRate").html("<p>Hits: <b>"+cache.hitCount+"</b></p><p>Miss: <b>"+cache.missCount+"</b></p><p>Hit rate: <b>"+cache.hitRate+"%</b></p>");
+			$("#hitMissRate").html("<p>"+iconHtml+"Hits: <b>"+cache.hitCount+"</b></p><p>"+iconHtml+"Miss: <b>"+cache.missCount+"</b></p><p>"+iconHtml+"Hit rate: <b>"+cache.hitRate+"%</b></p>");
 			
 			// Muestra cuantos bits necesita el indice y offset.
-			$("#bitsDireccion").html("<p>Index bits: <b>"+cache.bitsIndice+"</b></p><p>Offset bits: <b>"+cache.bitsOffset+"</b></p>");
+			$("#bitsDireccion").html("<p>"+iconHtml+"Index bits: <b>"+cache.bitsIndice+"</b></p><p>"+iconHtml+"Offset bits: <b>"+cache.bitsOffset+"</b></p>");
 			
 			// Desocultar resultados
 			$("#todosResultados").show();
